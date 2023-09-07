@@ -6,16 +6,28 @@ import AddLinkSection from '../components/AddLinkSection.vue';
 
 <template>
   <div class="wrapper">
-    <TheHeader></TheHeader>
+    <TheHeader />
 
     <div class="main">
-      <TheSidebar></TheSidebar>
-      <AddLinkSection></AddLinkSection>
+      <TheSidebar class="sidebar" />
+      <AddLinkSection class="add-link-section" />
     </div>
   </div>
 </template>
-<style>
+<style scoped>
 .main{
   display: flex;
+}
+/* Style the sidebar */
+.sidebar {
+    width: 40%;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+/* Style the content */
+.add-link-section {
+    flex: 1; /* Allow content to grow and fill remaining space */
+    padding: 20px;
 }
 </style>
