@@ -1,7 +1,12 @@
 const Link = require('./link')
+const User = require('./user')
 
-Link.sync()
+User.hasMany(Link)
+Link.belongsTo(User)
+Link.sync({ alter: true })
+User.sync({ alter: true })
 
 module.exports = {
   Link,
+  User,
 }
