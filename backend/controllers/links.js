@@ -28,4 +28,17 @@ router.get('/:id', linkFinder, async (req, res) => {
   }
 })
 
+router.delete('/:id', linkFinder, async (req, res) => {
+  if (!req.link) {
+    res.status(404).json({ message: 'Already has been deleted' })
+  }
+  if (req.link.userId === req.user.id) {
+    await req.link.destroy()
+    res.status(200).json({ message: 'Deleted link successfully' })
+  } else {
+    // User is not authorized
+    res.status(401).json({ message: 'Unauthorized' })
+  }
+})
+
 module.exports = router

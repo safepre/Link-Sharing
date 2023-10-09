@@ -2,5 +2,6 @@ POST http://localhost:3001/api/links
 Content-Type: application/json
 
 {
-  "url":"http://github.com/safepre",
+  "url": "http://github.com/safepre",
+  "userId": "1"
 }
