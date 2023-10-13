@@ -1,1 +1,2 @@
-DELETE http://localhost:3001/api/links/1
+DELETE http://localhost:3001/api/links/6
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRvZURvZURvZTEiLCJpZCI6MSwiaWF0IjoxNjk3MjM2Nzg2fQ.2nsHz-bwAZrpu7SkrDpSXtQCzwms8bNj0oy-09Ki8Cs
