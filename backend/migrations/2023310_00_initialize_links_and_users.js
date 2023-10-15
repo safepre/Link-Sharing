@@ -2,18 +2,14 @@ const { DataTypes } = require('sequelize')
 
 module.exports = {
   up: async ({ context: queryInterface }) => {
-    await queryInterface.createTable('notes', {
+    await queryInterface.createTable('links', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      content: {
+      url: {
         type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      important: {
-        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       date: {
@@ -35,15 +31,19 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     })
-    await queryInterface.addColumn('notes', 'user_id', {
+    await queryInterface.addColumn('links', 'user_id', {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'users', key: 'id' },
     })
   },
   down: async ({ context: queryInterface }) => {
-    await queryInterface.dropTable('notes')
+    await queryInterface.dropTable('links')
     await queryInterface.dropTable('users')
   },
 }

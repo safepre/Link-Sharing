@@ -3,7 +3,13 @@ const { Link, User } = require('../models')
 const { tokenExtractor, userExtractor } = require('../util/middleware')
 
 router.get('/', async (req, res) => {
-  const links = await Link.findAll()
+  const links = await Link.findAll({
+    attributes: { exclude: ['userId'] },
+    include: {
+      model: User,
+      attributes: ['name'],
+    },
+  })
   res.json(links)
 })
 
@@ -19,7 +25,6 @@ router.post('/', tokenExtractor, userExtractor, async (req, res) => {
     return res.status(400).json({ error })
   }
 })
-
 const linkFinder = async (req, res, next) => {
   req.link = await Link.findByPk(req.params.id)
   next()
