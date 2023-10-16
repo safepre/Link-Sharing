@@ -1,0 +1,10 @@
+POST http://localhost:3000/api/images/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhZmVsZ3ByZWNpYWRvQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE2OTc0MjY4NTF9.-N2H7vzqqtcx4DXuJuC-RK0dwX9Q6O4y54ypL9MZQIE
+
+----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="sample.jpg"
+Content-Type: image/jpeg
+
+@C:\Users\14246\Downloads\sample.jpg
+----WebKitFormBoundary7MA4YWxkTrZu0gW

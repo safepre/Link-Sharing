@@ -12,6 +12,9 @@ Link.init(
     url: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        isUrl: true,
+      },
     },
     date: {
       type: DataTypes.DATE,
