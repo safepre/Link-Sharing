@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt')
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
+    attributes: { exclude: ['passwordHash', 'userId'] },
     include: {
       model: Link,
-      attributes: { exclude: ['passwordHash', 'userId'] },
     },
   })
   res.json(users)
