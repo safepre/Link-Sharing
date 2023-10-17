@@ -22,6 +22,10 @@ User.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: true,
+        notEmpty: true,
+      },
     },
     passwordHash: {
       type: DataTypes.STRING,

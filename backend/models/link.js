@@ -14,6 +14,7 @@ Link.init(
       allowNull: false,
       validate: {
         isUrl: true,
+        notEmpty: true,
       },
     },
     date: {
