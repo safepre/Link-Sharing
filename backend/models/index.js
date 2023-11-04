@@ -7,9 +7,7 @@ Link.belongsTo(User)
 
 User.hasOne(Image)
 Image.belongsTo(User)
-Link.sync({ alter: true })
-User.sync({ alter: true })
-Image.sync({ alter: true })
+
 module.exports = {
   Link,
   User,

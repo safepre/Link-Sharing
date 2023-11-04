@@ -16,6 +16,17 @@ Link.init(
         isUrl: true,
         notEmpty: true,
       },
+      url_name: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
     },
     date: {
       type: DataTypes.DATE,
