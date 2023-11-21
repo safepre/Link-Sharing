@@ -1,6 +1,10 @@
 const router = require('express').Router()
 const { Link, User } = require('../models')
-const { tokenExtractor, userExtractor } = require('../util/middleware')
+const {
+  tokenExtractor,
+  userExtractor,
+  sessionExtractor,
+} = require('../util/middleware')
 
 router.get('/', async (req, res) => {
   const links = await Link.findAll({
@@ -13,18 +17,24 @@ router.get('/', async (req, res) => {
   res.json(links)
 })
 
-router.post('/', tokenExtractor, userExtractor, async (req, res) => {
-  try {
-    const link = await Link.create({
-      ...req.body,
-      userId: req.user.id,
-      date: new Date(),
-    })
-    res.json(link)
-  } catch (error) {
-    return res.status(400).json({ error })
+router.post(
+  '/',
+  tokenExtractor,
+  userExtractor,
+  sessionExtractor,
+  async (req, res) => {
+    try {
+      const link = await Link.create({
+        ...req.body,
+        userId: req.user.id,
+        date: new Date(),
+      })
+      res.json(link)
+    } catch (error) {
+      return res.status(400).json({ error })
+    }
   }
-})
+)
 const linkFinder = async (req, res, next) => {
   req.link = await Link.findByPk(req.params.id)
   next()
@@ -43,6 +53,7 @@ router.delete(
   tokenExtractor,
   userExtractor,
   linkFinder,
+  sessionExtractor,
   async (req, res) => {
     if (!req.link) {
       res.status(404).json({ message: 'Already has been deleted' })
