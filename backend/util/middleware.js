@@ -28,7 +28,26 @@ const userExtractor = async (req, res, next) => {
   }
   next()
 }
+
+const sessionExtractor = async (req, res, next) => {
+  const activeSession = await Session.findOne({
+    where: {
+      userId: req.user.id,
+    },
+  })
+
+  if (!activeSession) {
+    return res
+      .status(401)
+      .json({ error: 'No active sessions found. Please log in again.' })
+  } else {
+    req.session = activeSession
+  }
+
+  next()
+}
 module.exports = {
   tokenExtractor,
   userExtractor,
+  sessionExtractor,
 }
