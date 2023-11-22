@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for link-appshare on 2023-11-06T17:34:38-08:00
+# fly.toml app configuration file generated for linksharing-app-v1 on 2023-11-21T12:26:53-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "link-appshare"
+app = "linksharing-app-v1"
 primary_region = "lax"
 
 [build]
