@@ -16,6 +16,9 @@ router.get('/:id', async (req, res) => {
     attributes: {
       exclude: ['passwordHash'],
     },
+    include: {
+      model: Link,
+    },
   })
 
   if (user) {
