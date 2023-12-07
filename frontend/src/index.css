@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- Home Styling --- */
+.home-parent {
+  padding: 1.5rem;
+}
+.home-parent .navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.home-content-parent {
+  display: flex;
+  gap: 1.5rem;
+}
+.home-content-parent .ls-mobile {
+  width: 40%;
+  border: 1px solid red;
+}
+.home-content-parent .rs-links {
+  width: 60%;
+  border: 1px solid green;
+}
+.navbar__center > div {
+  display: flex;
+  padding: 0.6875rem 1.6875rem;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--Grey, #737373);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 150%; /* 1.5rem */
+}
+.link-active {
+  border-radius: 0.5rem;
+  background: var(--Light-Purple, #efebff);
+  color: var(--Purple, #633cff) !important;
+}
+
+/* --- Base Styles --- */
+.heading-primary {
+  color: var(--Dark-Grey, #333);
+  font-size: 2rem;
+  font-weight: 700;
+}
+.desc-primary {
+  color: var(--Grey, #737373);
+  font-size: 1rem;
+}
+.btn{
+  padding: 0.6875rem 1.6875rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+.btn:disabled{
+  opacity: 0.25;
+}
+.btn-outline{
+  border: 1px solid var(--Purple, #633cff);
+  color: var(--Purple, #633cff);
+}
+.btn-fill{
+background: var(--Purple, #633CFF);
+color: #fff;
+}
