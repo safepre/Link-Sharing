@@ -83,7 +83,7 @@ module.exports = {
           notEmpty: true,
         },
       },
-      passwordHash: {
+      password_hash: {
         type: DataTypes.STRING,
         allowNull: false,
       },

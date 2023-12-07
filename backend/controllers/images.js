@@ -1,9 +1,13 @@
 const router = require('express').Router()
 const { Image } = require('../models')
-const { tokenExtractor, userExtractor } = require('../util/middleware')
+const {
+  tokenExtractor,
+  userExtractor,
+  sessionExtractor,
+} = require('../util/middleware')
 const upload = require('../util/multer')
 
-router.get('/:id', tokenExtractor, userExtractor, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const userId = req.params.id
     const images = await Image.findAll({
@@ -20,6 +24,7 @@ router.post(
   '/upload',
   tokenExtractor,
   userExtractor,
+  sessionExtractor,
   upload.single('image'),
   async (req, res) => {
     try {
@@ -47,6 +52,7 @@ router.put(
   '/:id',
   tokenExtractor,
   userExtractor,
+  sessionExtractor,
   upload.single('image'),
   async (req, res) => {
     try {
