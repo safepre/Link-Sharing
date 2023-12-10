@@ -1,39 +1,20 @@
 const router = require('express').Router()
 const { Image } = require('../models')
-const {
-  tokenExtractor,
-  userExtractor,
-  sessionExtractor,
-} = require('../util/middleware')
+const { tokenExtractor, userExtractor } = require('../util/middleware')
 const upload = require('../util/multer')
 
-router.get('/:id', async (req, res) => {
-  try {
-    const userId = req.params.id
-    const images = await Image.findAll({
-      exclude: { userId },
-      where: { userId },
-    })
-    res.status(200).json(images)
-  } catch (error) {
-    res.status(500).json({ error: 'Error retrieving images' })
-  }
-})
-
 router.post(
-  '/upload',
+  '/upload/',
   tokenExtractor,
   userExtractor,
-  sessionExtractor,
   upload.single('image'),
   async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' })
       }
-      const image = await Image.create({
-        ...req.body,
-        userId: req.user.id,
+
+      const profile_payload = await Image.create({
         file_name: req.file.originalname,
         content_type: req.file.mimetype,
         image_data: req.file.buffer,
@@ -41,9 +22,10 @@ router.post(
         created_at: new Date(),
         updated_at: new Date(),
       })
-      res.status(201).json(image)
+      res.status(201).json(profile_payload)
     } catch (error) {
-      res.status(500).json({ error: 'Error uploading the image' })
+      console.log(error)
+      res.status(500).json({ error: 'Error uploading the profile' })
     }
   }
 )
@@ -52,7 +34,6 @@ router.put(
   '/:id',
   tokenExtractor,
   userExtractor,
-  sessionExtractor,
   upload.single('image'),
   async (req, res) => {
     try {
@@ -62,7 +43,6 @@ router.put(
 
       const imageId = req.params.id // Assuming you're getting the image ID from the URL
       const existingImage = await Image.findByPk(imageId) // Fetch the existing image by ID
-
       if (!existingImage) {
         return res.status(404).json({ error: 'Image not found' })
       }
@@ -80,4 +60,5 @@ router.put(
     }
   }
 )
+
 module.exports = router

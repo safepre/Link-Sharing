@@ -1,40 +1,31 @@
 const router = require('express').Router()
-const { Link, User } = require('../models')
-const {
-  tokenExtractor,
-  userExtractor,
-  sessionExtractor,
-} = require('../util/middleware')
+const { Link, Profile } = require('../models')
+const { tokenExtractor, userExtractor } = require('../util/middleware')
 
 router.get('/', async (req, res) => {
   const links = await Link.findAll({
-    attributes: { exclude: ['userId'] },
+    attributes: { exclude: ['profileId'] },
     include: {
-      model: User,
-      attributes: ['name'],
+      model: Profile,
+      attributes: ['first_name', 'last_name', 'email'],
     },
   })
   res.json(links)
 })
 
-router.post(
-  '/',
-  tokenExtractor,
-  userExtractor,
-  sessionExtractor,
-  async (req, res) => {
-    try {
-      const link = await Link.create({
-        ...req.body,
-        userId: req.user.id,
-        date: new Date(),
-      })
-      res.json(link)
-    } catch (error) {
-      return res.status(400).json({ error })
-    }
+router.post('/', tokenExtractor, userExtractor, async (req, res) => {
+  try {
+    const link = await Link.create({
+      ...req.body,
+      profileId: req.profile.id,
+      date: new Date(),
+    })
+    res.json(link)
+  } catch (error) {
+    return res.status(400).json({ error })
   }
-)
+})
+
 const linkFinder = async (req, res, next) => {
   req.link = await Link.findByPk(req.params.id)
   next()
@@ -53,16 +44,15 @@ router.delete(
   tokenExtractor,
   userExtractor,
   linkFinder,
-  sessionExtractor,
   async (req, res) => {
     if (!req.link) {
       res.status(404).json({ message: 'Already has been deleted' })
     }
-    if (req.link.userId === req.user.id) {
+    if (req.link.profileId === req.profile.id) {
       await req.link.destroy()
       res.status(200).json({ message: 'Deleted link successfully' })
     } else {
-      // User is not authorized
+      // User Profile is not authorized
       res.status(401).json({ message: 'Unauthorized' })
     }
   }
