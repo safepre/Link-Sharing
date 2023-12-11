@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('./config')
-const { User, Session } = require('../models')
+const { User, Profile } = require('../models')
+
 const tokenExtractor = async (req, res, next) => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
@@ -21,33 +22,12 @@ const userExtractor = async (req, res, next) => {
     return response.status(401).json({ error: 'token invalid' })
   } else {
     req.user = await User.findByPk(decodedToken.id)
-    if (req.user.disabled) {
-      req.user = null
-      return res.status(401).json({ error: 'User is disabled' })
-    }
+    req.profile = await Profile.findByPk(decodedToken.id) //D ecided to add this for our ../controllers/links
   }
   next()
 }
 
-const sessionExtractor = async (req, res, next) => {
-  const activeSession = await Session.findOne({
-    where: {
-      userId: req.user.id,
-    },
-  })
-
-  if (!activeSession) {
-    return res
-      .status(401)
-      .json({ error: 'No active sessions found. Please log in again.' })
-  } else {
-    req.session = activeSession
-  }
-
-  next()
-}
 module.exports = {
   tokenExtractor,
   userExtractor,
-  sessionExtractor,
 }

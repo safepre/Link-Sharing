@@ -5,10 +5,12 @@ const { tokenExtractor, userExtractor } = require('../util/middleware')
 router.get('/', async (req, res) => {
   const links = await Link.findAll({
     attributes: { exclude: ['profileId'] },
-    include: {
-      model: Profile,
-      attributes: ['first_name', 'last_name', 'email'],
-    },
+    include: [
+      {
+        model: Profile,
+        attributes: ['first_name', 'last_name'],
+      },
+    ],
   })
   res.json(links)
 })
@@ -38,6 +40,28 @@ router.get('/:id', linkFinder, async (req, res) => {
     res.status(404).end()
   }
 })
+
+router.put(
+  '/:id',
+  tokenExtractor,
+  userExtractor,
+  linkFinder,
+  async (req, res) => {
+    try {
+      if (req.link) {
+        req.link.platform = req.body.platform
+        req.link.url = req.body.url
+        date: new Date()
+        await req.link.save()
+        res.status(200).json(req.link)
+      } else {
+        res.status(404).end()
+      }
+    } catch (error) {
+      return res.status(400).json({ error })
+    }
+  }
+)
 
 router.delete(
   '/:id',

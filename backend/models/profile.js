@@ -1,45 +1,53 @@
 const { Model, DataTypes } = require('sequelize')
 const { sequelize } = require('../util/db')
 
-class Image extends Model {}
-Image.init(
+class Profile extends Model {}
+Profile.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    file_name: {
+    first_name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        is: /^[A-Z][a-z]+$/,
+        min: 3,
+        max: 23,
+      },
     },
-    content_type: {
+    last_name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        is: /^[A-Z][a-z]+$/,
+        min: 3,
+        max: 23,
+      },
     },
-    image_data: {
-      type: DataTypes.BLOB,
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
-    },
-    file_size: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
     },
     created_at: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
     updated_at: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
   },
   {
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: 'image',
+    modelName: 'profile',
   }
 )
 
-module.exports = Image
+module.exports = Profile

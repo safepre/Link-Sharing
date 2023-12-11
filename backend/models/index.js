@@ -1,20 +1,19 @@
 const Link = require('./link')
 const User = require('./user')
-const Image = require('./image')
-const Session = require('./session')
+const Profile = require('./profile')
 
-User.hasMany(Link)
-Link.belongsTo(User)
+User.hasOne(Profile)
+Profile.belongsTo(User)
 
-User.hasOne(Image)
-Image.belongsTo(User)
+Profile.hasMany(Link)
+Link.belongsTo(Profile)
 
-User.hasOne(Session)
-Session.belongsTo(User)
+User.sync({ alter: true })
+Link.sync({ alter: true })
+Profile.sync({ alter: true })
 
 module.exports = {
   Link,
   User,
-  Image,
-  Session,
+  Profile,
 }

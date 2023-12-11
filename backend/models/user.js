@@ -11,20 +11,12 @@ User.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
+    email_address: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
       validate: {
         isEmail: true,
-      },
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isAlpha: true,
-        notEmpty: true,
       },
     },
     passwordHash: {

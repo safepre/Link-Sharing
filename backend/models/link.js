@@ -17,15 +17,12 @@ Link.init(
         notEmpty: true,
       },
     },
-    name: {
+    platform: {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
-    },
-    description: {
-      type: DataTypes.TEXT,
     },
     date: {
       type: DataTypes.DATE,
