@@ -31,7 +31,7 @@ router.post(
 )
 
 router.put(
-  '/',
+  '/upload/',
   tokenExtractor,
   userExtractor,
   upload.single('image'),
