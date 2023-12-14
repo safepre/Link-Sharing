@@ -16,49 +16,54 @@ module.exports = {
           notEmpty: true,
         },
       },
-      name: {
+      platform: {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           notEmpty: true,
         },
       },
-      description: {
-        type: DataTypes.TEXT,
-      },
       date: {
         type: DataTypes.DATE,
       },
     })
-    await queryInterface.createTable('images', {
+    await queryInterface.createTable('profiles', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      file_name: {
+      first_name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[A-Z][a-z]+$/,
+          min: 3,
+          max: 23,
+        },
       },
-      content_type: {
+      last_name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[A-Z][a-z]+$/,
+          min: 3,
+          max: 23,
+        },
       },
-      image_data: {
-        type: DataTypes.BLOB,
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
-      },
-      file_size: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        validate: {
+          isEmail: true,
+        },
       },
       created_at: {
         type: DataTypes.DATE,
-        allowNull: false,
       },
       updated_at: {
         type: DataTypes.DATE,
-        allowNull: false,
       },
     })
     await queryInterface.createTable('users', {
@@ -67,7 +72,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      username: {
+      email_address: {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
@@ -75,25 +80,21 @@ module.exports = {
           isEmail: true,
         },
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isAlpha: true,
-          notEmpty: true,
-        },
-      },
       password_hash: {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      disabled: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     })
-    await queryInterface.addColumn('links', 'user_id', {
+    await queryInterface.addColumn('links', 'profile_id', {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'users', key: 'id' },
+      references: { model: 'profiles', key: 'id' },
     })
-    await queryInterface.addColumn('images', 'user_id', {
+    await queryInterface.addColumn('profiles', 'user_id', {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'users', key: 'id' },
@@ -102,6 +103,6 @@ module.exports = {
   down: async ({ context: queryInterface }) => {
     await queryInterface.dropTable('links')
     await queryInterface.dropTable('users')
-    await queryInterface.dropTable('images')
+    await queryInterface.dropTable('profiles')
   },
 }

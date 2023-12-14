@@ -8,10 +8,6 @@ Profile.belongsTo(User)
 Profile.hasMany(Link)
 Link.belongsTo(Profile)
 
-User.sync({ alter: true })
-Link.sync({ alter: true })
-Profile.sync({ alter: true })
-
 module.exports = {
   Link,
   User,
