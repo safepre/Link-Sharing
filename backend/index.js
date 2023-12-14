@@ -24,6 +24,7 @@ app.use('/api/login', loginRouter)
 app.use('/api/signup', signupRouter)
 app.use('/api/profiles', profileRouter)
 app.use('/api/images', imageRouter)
+
 const start = async () => {
   await connectToDatabase()
   app.listen(PORT, () => {
