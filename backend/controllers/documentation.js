@@ -47,9 +47,9 @@ const apiDocumentation = `
  * - **Authorization bearer required**
  * - **Method:** \`PUT\`
  * - **Request Parameters:**
- *   - first_name (string): Updated first name (optional)
- *   - last_name (string): Updated last name (optional)
- *   - email (string): Updated email address (optional)
+ *   - first_name (string): Updated first name 
+ *   - last_name (string): Updated last name 
+ *   - email (string): Updated email address 
  *  
  * ### Link Management
  * #### Get User Links
@@ -87,7 +87,7 @@ const apiDocumentation = `
  * - **Authorization bearer required**
  * - **Method:** \`POST\`
  * 
- * #### Update Photo (cannot be removed, refer to Figma design)
+ * #### Update Photo 
  * - **Endpoint:** \`/api/images/upload/\`
  * - **Authorization bearer required**
  * - **Method:** \`PUT\`
