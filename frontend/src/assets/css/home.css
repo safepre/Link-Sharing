@@ -1,0 +1,41 @@
+.base-grey-style{
+    color: var(--Grey, #737373);
+font-family: Instrument Sans;
+font-size: 1rem;
+font-style: normal;
+line-height: 150%; /* 1.5rem */
+}
+
+/* Dropdown.css */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .selected-option {
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .option {
+    padding: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+  

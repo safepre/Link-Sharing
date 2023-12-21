@@ -4,6 +4,7 @@ import devlinkLogo from "../assets/images/logo-devlinks-large.svg";
 import profileDetailIcon from "../assets/images/icon-profile-details-header.svg";
 import illustrationEmpty from '../assets/images/illustration-empty.svg';
 import phoneMockup from '../assets/images/illustration-phone-mockup.svg'
+import '../assets/css/home.css'
 
 const Home = () => {
   const images = {
@@ -13,6 +14,11 @@ const Home = () => {
     illustrationEmpty,
     phoneMockup
   };
+  const options = [
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+    { value: 'option3', label: 'Option 3' },
+  ];
 
   return (
     <div className="home-parent">
@@ -66,13 +72,66 @@ const Home = () => {
                 <button className="btn btn-outline w-full">+ Add new link</button>
               </div>
             </div>
-            <div className="rs-links__bottom border p-5 mb-5 flex justify-center items-center flex-col">
+
+            {/* No links view */}
+            {false && <div className="rs-links__bottom border p-5 mb-5 flex justify-center items-center flex-col">
               <img src={images.illustrationEmpty} alt="empty illustration" />
               <div className="heading-primary mt-10 mb-6">Let's get you started</div>
               <div className="desc-primary text-center">
                 Use the “Add new link” button to get started. Once you have more
                 than one link, you can reorder and edit them. We're here to help
                 you share your profiles with everyone!
+              </div>
+            </div>}
+
+            {/* Links view */}
+            <div className="links-view-parent border">
+              <div className="single-link-parent p-5">
+                <div className="top flex items-center justify-between pb-3">
+                  <div className="flex">
+                    <div className="icon mr-2">icon</div>
+                    <div className="link-no base-grey-style font-bold">Link #1</div>
+                  </div>
+                  <div className="remove base-grey-style font-normal">Remove</div>
+                </div>
+                <div className="plateform pb-3 input-label">Plateform</div>
+                <div className="form-group">
+            <div className="form-label input-label">Link</div>
+            {/* Dropdown */}
+            <div className="dropdown">
+      <div className="selected-option"
+      // onClick={() => setIsOpen(!isOpen)}
+      >
+        {'Select an option'}
+      </div>
+      {true && (
+        <div className="options">
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className="option"
+              // onClick={() => handleOptionClick(option)}
+            >
+              {option.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+            <div className="input-with-icon">
+              <span className="input-icon">
+                <img src={linkIcon} alt="" />
+              </span>
+              <input
+                className="w-full"
+                type="text"
+                id="url"
+                // ref={emailRef}
+                placeholder="e.g. https://www.github.com/numan-iftikhar"
+                required
+              />
+            </div>
+          </div>
               </div>
             </div>
           </div>
