@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Profile, User, Link } = require('../models')
+const { Profile, User, Link, Image } = require('../models')
 const { tokenExtractor, userExtractor } = require('../util/middleware')
 
 router.get('/', async (req, res) => {
@@ -11,31 +11,45 @@ router.get('/', async (req, res) => {
           model: User,
           attributes: ['email_address'],
         },
-        { model: Link },
+        {
+          model: Link,
+          attributes: { exclude: ['id', 'profileId'] }, // Exclude 'id' and 'profileId' fields
+        },
+        {
+          model: Image,
+          attributes: { exclude: ['id', 'profileId'] }, // Exclude 'id' and 'profileId' fields
+        },
       ],
     })
     res.status(200).json(profiles)
   } catch (error) {
-    res.status(500).json({ error: 'Error retrieving images' })
+    res.status(500).json({ error: 'Error retrieving profiles' })
   }
 })
 
 const profileFinder = async (req, res, next) => {
-  req.profile = await Profile.findByPk(
-    req.params.id,
-
-    {
+  try {
+    req.profile = await Profile.findByPk(req.params.id, {
       attributes: { exclude: ['userId'] },
       include: [
         {
           model: User,
           attributes: ['email_address'],
         },
-        { model: Link },
+        {
+          model: Link,
+          attributes: { exclude: ['id', 'profileId'] }, // Exclude 'id' and 'profileId' fields
+        },
+        {
+          model: Image,
+          attributes: { exclude: ['id', 'profileId'] }, // Exclude 'id' and 'profileId' fields
+        },
       ],
-    }
-  )
-  next()
+    })
+    next()
+  } catch (error) {
+    res.status(500).json({ error: 'Error finding profile' })
+  }
 }
 
 router.get('/:id', profileFinder, async (req, res) => {

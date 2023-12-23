@@ -1,56 +1,69 @@
 const router = require('express').Router()
+const { Image } = require('../models')
 const { tokenExtractor, userExtractor } = require('../util/middleware')
 const upload = require('../util/multer')
 
 router.post(
-  '/upload/',
+  '/upload/:profileId',
   tokenExtractor,
   userExtractor,
   upload.single('image'),
   async (req, res) => {
     try {
-      if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' })
+      const profileId = req.params.profileId
+
+      const image_payload = {
+        image_data: req.file.buffer.toString('base64'),
+        profileId: profileId, // Use the retrieved profileId as the foreign key
       }
 
-      const profile_payload = {
-        file_name: req.file.originalname,
-        content_type: req.file.mimetype,
-        image_data: req.file.buffer,
-        file_size: req.file.size,
-        created_at: new Date(),
-        updated_at: new Date(),
-      }
+      // Create the image entry in the database
+      const createdImage = await Image.create(image_payload)
 
-      res.status(201).json(profile_payload)
+      const imageId = createdImage.id
+
+      res.status(201).json({ imageId })
     } catch (error) {
       console.log(error)
-      res.status(500).json({ error: 'Error uploading the profile' })
+      res.status(500).json({ error: 'Error uploading the image' })
     }
   }
 )
 
 router.put(
-  '/upload/',
+  '/upload/:profileId',
   tokenExtractor,
   userExtractor,
   upload.single('image'),
   async (req, res) => {
     try {
-      if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' })
-      }
+      const profileId = req.params.profileId
 
-      const profile_payload = {
-        file_name: req.file.originalname,
-        content_type: req.file.mimetype,
-        image_data: req.file.buffer,
-        file_size: req.file.size,
-        updated_at: new Date(),
-      }
+      const existingImage = await Image.findOne({ where: { profileId } })
 
-      res.status(200).json(profile_payload)
+      if (existingImage) {
+        // If an image exists, update the existing image
+        const image_payload = {
+          image_data: req.file.buffer.toString('base64'),
+        }
+
+        await Image.update(image_payload, { where: { profileId } })
+
+        res.status(200).json(image_payload)
+      } else {
+        // If no image exists, create a new image
+        const image_payload = {
+          image_data: req.file.buffer.toString('base64'),
+          profileId: profileId,
+        }
+
+        // Create the image entry in the database
+        const createdImage = await Image.create(image_payload)
+
+        res.status(201).json(createdImage)
+      }
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error: 'Error updating the image' })
     }
   }
