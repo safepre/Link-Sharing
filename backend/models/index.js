@@ -11,11 +11,6 @@ Link.belongsTo(Profile)
 Profile.hasOne(Image)
 Image.belongsTo(Profile)
 
-Link.sync({ alter: true })
-User.sync({ alter: true })
-Profile.sync({ alter: true })
-Image.sync({ alter: true })
-
 module.exports = {
   Link,
   User,

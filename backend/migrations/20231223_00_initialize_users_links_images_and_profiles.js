@@ -20,6 +20,27 @@ module.exports = {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
+          isIn: [
+            [
+              'Github',
+              'Frontend Mentor',
+              'X',
+              'Linkedin',
+              'Youtube',
+              'Facebook',
+              'Twitch',
+              'Dev.to',
+              'Codewars',
+              'Codepen',
+              'freeCodeCamp',
+              'LeetCode',
+              'GitLab',
+              'Hashnode',
+              'Stack Overflow',
+              'Khan Academy',
+              'Replit',
+            ],
+          ],
           notEmpty: true,
         },
       },
@@ -89,6 +110,17 @@ module.exports = {
         defaultValue: false,
       },
     })
+    await queryInterface.createTable('images', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      image_data: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+    })
     await queryInterface.addColumn('links', 'profile_id', {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -99,10 +131,16 @@ module.exports = {
       allowNull: false,
       references: { model: 'users', key: 'id' },
     })
+    await queryInterface.addColumn('images', 'profile_id', {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: 'profiles', key: 'id' },
+    })
   },
   down: async ({ context: queryInterface }) => {
     await queryInterface.dropTable('links')
     await queryInterface.dropTable('users')
     await queryInterface.dropTable('profiles')
+    await queryInterface.dropTable('images')
   },
 }

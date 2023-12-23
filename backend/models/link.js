@@ -39,6 +39,7 @@ Link.init(
             'Hashnode',
             'Stack Overflow',
             'Khan Academy',
+            'Replit',
           ],
         ],
         notEmpty: true,
