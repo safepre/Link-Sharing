@@ -1,8 +1,10 @@
-import React from "react";
-import linkIcon from "../assets/images/icon-link.svg";
-import devlinkLogo from "../assets/images/logo-devlinks-large.svg";
-import profileDetailIcon from "../assets/images/icon-profile-details-header.svg";
-import illustrationEmpty from '../assets/images/illustration-empty.svg';
+/* eslint-disable react/no-unescaped-entities */
+// eslint-disable-next-line no-unused-vars
+import React from 'react'
+import linkIcon from '../assets/images/icon-link.svg'
+import devlinkLogo from '../assets/images/logo-devlinks-large.svg'
+import profileDetailIcon from '../assets/images/icon-profile-details-header.svg'
+import illustrationEmpty from '../assets/images/illustration-empty.svg'
 import phoneMockup from '../assets/images/illustration-phone-mockup.svg'
 
 const Home = () => {
@@ -11,8 +13,8 @@ const Home = () => {
     devlinkLogo,
     profileDetailIcon,
     illustrationEmpty,
-    phoneMockup
-  };
+    phoneMockup,
+  }
 
   return (
     <div className="home-parent">
@@ -63,12 +65,16 @@ const Home = () => {
                 with the world!
               </div>
               <div>
-                <button className="btn btn-outline w-full">+ Add new link</button>
+                <button className="btn btn-outline w-full">
+                  + Add new link
+                </button>
               </div>
             </div>
             <div className="rs-links__bottom border p-5 mb-5 flex justify-center items-center flex-col">
               <img src={images.illustrationEmpty} alt="empty illustration" />
-              <div className="heading-primary mt-10 mb-6">Let's get you started</div>
+              <div className="heading-primary mt-10 mb-6">
+                Let's get you started
+              </div>
               <div className="desc-primary text-center">
                 Use the “Add new link” button to get started. Once you have more
                 than one link, you can reorder and edit them. We're here to help
@@ -84,7 +90,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
