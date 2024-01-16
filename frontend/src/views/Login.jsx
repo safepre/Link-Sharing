@@ -18,9 +18,7 @@ function LoginForm() {
     const token = localStorage.getItem('token')
 
     // If a token is present, redirect the user to the home page
-    if (token) {
-      navigate('/home')
-    }
+    token ? navigate('/home') : navigate('/')
   }, [navigate])
 
   const handleEmailChange = e => {
