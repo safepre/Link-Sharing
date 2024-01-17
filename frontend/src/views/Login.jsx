@@ -13,14 +13,6 @@ function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  // Check for the presence of the token when the component mounts
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    // If a token is present, redirect the user to the home page
-    token ? navigate('/home') : navigate('/')
-  }, [navigate])
-
   const handleEmailChange = e => {
     setEmail(e.target.value)
   }

@@ -4,7 +4,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useRef } from 'react'
 
-import dropdownBtn from '/Users/safelgp/work/Link-Sharing/frontend/src/assets/images/vector-1.svg'
+import dropdownBtn from '../assets/images/vector-1.svg'
 import linkIcon from '../assets/images/icon-link.svg'
 import githubIcon from '../assets/images/icon-github.svg'
 import youtubeIcon from '../assets/images/icon-youtube.svg'
@@ -22,7 +22,7 @@ import khanacademyIcon from '../assets/images/khan-academy-icon-svgrepo-com.svg'
 import leetcodeIcon from '../assets/images/leetcode-svgrepo-com.svg'
 import xIcon from '../assets/images/X_logo_2023_original.svg'
 import replitIcon from '../assets/images/New_Replit_Logo.svg'
-import facebookIcon from '/Users/safelgp/work/Link-Sharing/frontend/src/assets/images/icon-facebook.svg'
+import facebookIcon from '../assets/images/icon-facebook.svg'
 
 // eslint-disable-next-line react/prop-types
 const LinkAddition = ({
