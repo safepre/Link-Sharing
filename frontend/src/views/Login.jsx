@@ -7,11 +7,13 @@ import devLinkLogoLarge from '../assets/images/logo-devlinks-large.svg'
 import emailIcon from '../assets/images/icon-email.svg'
 import lockIcon from '../assets/images/icon-password.svg'
 import '../assets/css/auth.css'
+import { useAuth } from '../services/authContext'
 
 function LoginForm() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const { login } = useAuth() // Access the login function from the context
 
   const handleEmailChange = e => {
     setEmail(e.target.value)
@@ -25,7 +27,6 @@ function LoginForm() {
     e.preventDefault()
 
     try {
-      // Make a POST request to the login API endpoint
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_API}/login`,
         {
@@ -33,19 +34,15 @@ function LoginForm() {
           password: password,
         }
       )
-      // Check if the response contains a token
+      console.log(response.data)
       if (response.data.token) {
-        // Save the token to local storage or a state for later use
-        localStorage.setItem('token', response.data.token)
-
-        // Redirect to the home page
+        login(response.data.token, response.data.email_address) // Use the login function from the context
         navigate('/home')
       } else {
         console.log('API Response:', response.data)
         // Handle other cases as needed
       }
     } catch (error) {
-      // Handle errors
       console.error('API Error:', error.message)
     }
   }

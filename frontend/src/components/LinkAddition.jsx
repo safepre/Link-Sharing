@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 // LinkAddition.js
 
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useRef } from 'react'
-
+import axios from 'axios'
 import dropdownBtn from '../assets/images/vector-1.svg'
 import linkIcon from '../assets/images/icon-link.svg'
 import githubIcon from '../assets/images/icon-github.svg'
@@ -23,6 +24,12 @@ import leetcodeIcon from '../assets/images/leetcode-svgrepo-com.svg'
 import xIcon from '../assets/images/X_logo_2023_original.svg'
 import replitIcon from '../assets/images/New_Replit_Logo.svg'
 import facebookIcon from '../assets/images/icon-facebook.svg'
+import { useAuth } from '../services/authContext'
+
+// ... (your imports)
+
+// eslint-disable-next-line react/prop-types
+// ... (your imports)
 
 // eslint-disable-next-line react/prop-types
 const LinkAddition = ({
@@ -30,13 +37,23 @@ const LinkAddition = ({
   onClickRemove,
   onPlatformSelect,
   onUrlChange,
+  linkSections,
+  setLinkSections,
+  showRemoveButton,
+  isLastLink,
 }) => {
   const [isContentVisible, setIsContentVisible] = useState(true)
-  const [selectedPlatform, setSelectedPlatform] = useState(null) // Updated state
-  const [selectedPlatformsArray, setSelectedPlatformsArray] = useState([])
+  const [selectedPlatform, setSelectedPlatform] = useState(null)
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
-  const [url, setUrl] = useState('') // New state for URL input
+  const [url, setUrl] = useState('')
+  const [lastSelectedPlatform, setLastSelectedPlatform] = useState(null)
+
+  const { token, user } = useAuth()
+
+  useEffect(() => {
+    // Additional initialization logic if needed
+  }, []) // Empty dependency array to run the effect once after the initial render
 
   const images = {
     githubIcon,
@@ -82,10 +99,7 @@ const LinkAddition = ({
 
   const handleUrlChange = e => {
     const newUrl = e.target.value
-    console.log(`Link ${linkNumber} URL changed: ${newUrl}`)
-
     setUrl(newUrl)
-    // Call the onUrlChange callback with linkNumber and newUrl
     onUrlChange(linkNumber, newUrl)
   }
 
@@ -96,55 +110,100 @@ const LinkAddition = ({
   const handlePlatformLeave = platform => {
     platformStates[platform][1](false)
   }
+  const handleRemoveLink = async linkIndexToRemove => {
+    console.log('Home button clicked')
+    try {
+      // Get the link ID from the backend based on the platform name
+      const linkToDelete = linkSections[linkIndexToRemove]
+      const platformName = linkToDelete.selectedPlatform
+      const urlName = linkToDelete.url
 
-  const handleRemoveClick = () => {
-    // Call the remove function passed as a prop
-    onClickRemove(linkNumber)
+      const userProfileResponse = await axios.get(
+        `${import.meta.env.VITE_BASE_API}/users`
+      )
+      const userProfile = userProfileResponse.data.find(
+        email => email.email_address === user
+      )
 
-    // Remove the selected platform from the array when removing the link
-    setSelectedPlatformsArray(prevArray =>
-      prevArray.filter(item => item.linkNumber !== linkNumber)
-    )
+      if (userProfile) {
+        const profileResponse = await axios.get(
+          `${import.meta.env.VITE_BASE_API}/links`
+        )
+        const linkToDeleteBackend = profileResponse.data.find(
+          link => link.platform === platformName && link.url === urlName
+        )
+
+        if (linkToDeleteBackend) {
+          console.log('Link to delete from backend:', linkToDeleteBackend)
+
+          // Delete the link on the backend
+          const deleteResponse = await axios.delete(
+            `${import.meta.env.VITE_BASE_API}/links/${linkToDeleteBackend.id}`,
+            {
+              headers: {
+                Authorization: `bearer ${token}`,
+              },
+            }
+          )
+
+          console.log('Link deleted from backend:', deleteResponse.data)
+        }
+      }
+
+      // Update the order when removing a link on the frontend
+      setLinkSections(prevSections => {
+        const updatedSections = prevSections.filter(
+          (_, index) => index !== linkIndexToRemove
+        )
+
+        // Update the order when removing a link
+        updatedSections.forEach((section, index) => {
+          section.order = index + 1
+        })
+
+        console.log('Updated sections after removing link:', updatedSections)
+
+        return updatedSections
+      })
+    } catch (error) {
+      console.error('Error removing link:', error.message)
+    }
   }
-
   const handleRectangleLinkClick = () => {
-    // Toggle the visibility of dropdown and input
     setIsContentVisible(prevValue => !prevValue)
   }
 
+  // Inside handleDropdownClick function
   const handleDropdownClick = () => {
     setIsDropdownVisible(prevValue => !prevValue)
 
-    // Reset selectedPlatform when closing the dropdown
-    !isDropdownVisible && setSelectedPlatform(null)
+    if (!isDropdownVisible && lastSelectedPlatform) {
+      // Find the index of lastSelectedPlatform in linkSections
+      const index = linkSections.findIndex(
+        section => section.platform === lastSelectedPlatform
+      )
+
+      // Display the icon and platform at the found index
+      if (index !== -1) {
+        setSelectedPlatform(linkSections[index].platform)
+        setLastSelectedPlatform(linkSections[index].platform)
+      }
+    }
   }
 
   const handlePlatformClick = platform => {
-    setSelectedPlatform(platform)
+    setLinkSections(prevSections => {
+      const updatedSections = [...prevSections]
+      updatedSections[linkNumber - 1] = {
+        ...updatedSections[linkNumber - 1],
+        platform: platform,
+      }
+      return updatedSections
+    })
 
-    // Check if the platform is already in the array for any link
-    const existingPlatformIndex = selectedPlatformsArray.findIndex(
-      item => item.linkNumber === linkNumber
-    )
-
-    if (existingPlatformIndex !== -1) {
-      // Update the platform in the array
-      setSelectedPlatformsArray(prevArray => {
-        const newArray = [...prevArray]
-        newArray[existingPlatformIndex].selectedPlatform = platform
-        return newArray
-      })
-    } else {
-      // Add a new entry to the array
-      setSelectedPlatformsArray(prevArray => [
-        ...prevArray,
-        { linkNumber, selectedPlatform: platform },
-      ])
-    }
-
-    // Call the onPlatformSelect callback with linkNumber and selectedPlatform
+    setSelectedPlatform(platform) // Update the selected platform state
     onPlatformSelect(linkNumber, platform)
-    setIsDropdownVisible(false)
+    setIsDropdownVisible(false) // Close the dropdown after selecting a platform
   }
 
   return (
@@ -160,9 +219,13 @@ const LinkAddition = ({
             </button>
             <span className="link-font-style"> Link #{linkNumber}</span>
           </div>
-          <button className="remove-button" onClick={handleRemoveClick}>
-            Remove
-          </button>
+          {isLastLink && (
+            <button
+              className="remove-button"
+              onClick={() => handleRemoveLink(linkNumber - 1)}>
+              Remove
+            </button>
+          )}
         </div>
 
         {isContentVisible && (
@@ -190,34 +253,18 @@ const LinkAddition = ({
                   </>
                 ) : (
                   <span className="placeholder">
-                    {selectedPlatformsArray.length > 0 && (
+                    {lastSelectedPlatform && (
                       <>
                         <img
-                          className={`${selectedPlatformsArray[
-                            selectedPlatformsArray.length - 1
-                          ].selectedPlatform.toLowerCase()}-icon`}
+                          className={`${lastSelectedPlatform.toLowerCase()}-icon`}
                           src={
-                            images[
-                              `${selectedPlatformsArray[
-                                selectedPlatformsArray.length - 1
-                              ].selectedPlatform.toLowerCase()}Icon`
-                            ]
+                            images[`${lastSelectedPlatform.toLowerCase()}Icon`]
                           }
-                          alt={`${
-                            selectedPlatformsArray[
-                              selectedPlatformsArray.length - 1
-                            ].selectedPlatform
-                          } Icon`}
+                          alt={`${lastSelectedPlatform} Icon`}
                         />
                         <span
-                          className={`${selectedPlatformsArray[
-                            selectedPlatformsArray.length - 1
-                          ].selectedPlatform.toLowerCase()}`}>
-                          {
-                            selectedPlatformsArray[
-                              selectedPlatformsArray.length - 1
-                            ].selectedPlatform
-                          }
+                          className={`${lastSelectedPlatform.toLowerCase()}`}>
+                          {lastSelectedPlatform}
                         </span>
                       </>
                     )}
@@ -264,7 +311,7 @@ const LinkAddition = ({
               />
               <input
                 className="link-input"
-                placeholder="e.g. https://www.github.com/johnappleseed"
+                placeholder={`e.g. https://www.${selectedPlatform?.toLowerCase()}.com`}
                 value={url}
                 onChange={handleUrlChange}
               />

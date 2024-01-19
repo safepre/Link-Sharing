@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import LinkAddition from '../components/LinkAddition'
 import linkIcon from '../assets/images/icon-link.svg'
 import selectedLinkIcon from '../assets/images/ph-link-bold.svg'
@@ -12,15 +12,40 @@ import phoneMockup from '../assets/images/illustration-phone-mockup.svg'
 import image from '../assets/images/ph-image.svg'
 import ellipse from '../assets/images/ellipse-3.svg'
 import axios from 'axios'
+import { useAuth } from '../services/authContext'
 
 const Home = () => {
   const [linkSections, setLinkSections] = useState([])
+  const [selectedFile, setSelectedFile] = useState(null)
+
   const [isLinkSectionVisible, setLinkSectionVisible] = useState(false)
   const [isLinksBlockVisible, setLinksBlockVisible] = useState(true)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [isProfileSaveVisible, setProfileSaveVisible] = useState(false)
+  const fileInputRef = useRef(null)
+  const [profilePictureUrl, setProfilePictureUrl] = useState(null)
+
+  const [isUploading, setIsUploading] = useState(false)
+
+  const { isLoggedIn, logout, token, user } = useAuth()
+  const [userLinks, setUserLinks] = useState([])
+
+  useEffect(() => {
+    const fetchUserLinks = async () => {
+      try {
+        const userLinksResponse = await axios.get(
+          `${import.meta.env.VITE_BASE_API}/links`
+        )
+        setUserLinks(userLinksResponse.data)
+      } catch (error) {
+        console.error('Error fetching user links:', error.message)
+      }
+    }
+
+    fetchUserLinks()
+  }, [])
 
   const images = {
     linkIcon,
@@ -34,8 +59,111 @@ const Home = () => {
     image,
   }
 
+  // Add this useEffect hook at the end of your component
+  useEffect(() => {
+    setLinkSectionVisible(linkSections.length > 0)
+
+    // Reorder linkSections based on their original order
+    const reorderedSections = linkSections.map((section, index) => ({
+      ...section,
+      order: index + 1,
+    }))
+
+    setLinkSections(reorderedSections)
+  }, [linkSections.length]) // Only trigger the effect when the length of linkSections changes
+
+  // Function to handle the logout button click
+  const handleLogout = () => {
+    // Call the logout function from the context
+    logout()
+  }
   const toggleLinksBlockVisibility = visible => {
     setLinksBlockVisible(visible)
+  }
+
+  const handleFileChange = event => {
+    const file = event.target.files[0]
+    setSelectedFile(file)
+  }
+
+  const handleImageUpload = async () => {
+    if (isUploading) {
+      console.log('Upload already in progress.')
+      return
+    }
+
+    try {
+      setIsUploading(true)
+
+      const userProfileResponse = await axios.get(
+        `${import.meta.env.VITE_BASE_API}/profiles`
+      )
+
+      const userProfile = userProfileResponse.data.find(
+        profile => profile.user.email_address === user
+      )
+
+      if (!selectedFile) {
+        console.log('No file selected for upload.')
+        return
+      }
+
+      const formData = new FormData()
+      formData.append('image', selectedFile)
+
+      if (userProfile) {
+        // User profile exists
+        if (userProfile.image === null) {
+          // User profile has no image, create a new one using POST request
+          const uploadResponse = await axios.post(
+            `${import.meta.env.VITE_BASE_API}/images/upload/${userProfile.id}`,
+            formData,
+            {
+              headers: {
+                Authorization: `bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          )
+          setProfilePictureUrl(uploadResponse.data.image_data)
+        } else {
+          // User profile already has an image, update it using PUT request
+          const uploadResponse = await axios.put(
+            `${import.meta.env.VITE_BASE_API}/images/upload/${userProfile.id}`,
+            formData,
+            {
+              headers: {
+                Authorization: `bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          )
+
+          console.log('Image Updated:', uploadResponse.data)
+
+          setProfilePictureUrl(uploadResponse.data.image_data)
+        }
+      } else {
+        // User profile doesn't exist, create a new one using POST request
+        const uploadResponse = await axios.post(
+          `${import.meta.env.VITE_BASE_API}/images/upload`,
+          formData,
+          {
+            headers: {
+              Authorization: `bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        )
+
+        setProfilePictureUrl(uploadResponse.data.image_data)
+      }
+    } catch (error) {
+      // Handle API errors
+      console.error('Image Upload Error:', error.message)
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   const handleUrlChange = (linkNumber, url) => {
@@ -110,51 +238,29 @@ const Home = () => {
       firstName.trim() !== '' && lastName.trim() !== '' && email.trim() !== ''
     )
   }
-  // Function to handle the save button click
   const handleProfileSave = async () => {
-    if (isProfileSaveVisible) {
-      const token = localStorage.getItem('token')
+    await handleImageUpload()
 
-      if (!token) {
-        console.log('User not authenticated. Redirecting to login.')
-        // Redirect to the login page or handle authentication as needed
-        return
-      }
+    if (!isLoggedIn) {
+      console.log('User not authenticated. Redirecting to login.')
+      // Redirect to the login page or handle authentication as needed
+      return
+    }
 
-      try {
-        // Check if a profile with the given first name and last name already exists
-        const existingProfile = await axios.get(
-          `${import.meta.env.VITE_BASE_API}/profiles`,
-          {
-            params: {
-              first_name: firstName,
-              last_name: lastName,
-            },
-          }
-        )
+    try {
+      // Check if the user's profile exists
+      const userProfileResponse = await axios.get(
+        `${import.meta.env.VITE_BASE_API}/profiles`
+      )
 
-        if (existingProfile.data.length > 0) {
-          // Profile already exists, update it using PUT request
-          const response = await axios.put(
-            `${import.meta.env.VITE_BASE_API}/profiles/${
-              existingProfile.data[0].id
-            }`,
-            {
-              first_name: firstName,
-              last_name: lastName,
-              email: email,
-            },
-            {
-              headers: {
-                Authorization: `bearer ${token}`,
-              },
-            }
-          )
-
-          console.log('Profile Updated:', response.data)
-        } else {
-          // Profile doesn't exist, create a new one using POST request
-          const response = await axios.post(
+      const userProfile = userProfileResponse.data.find(
+        profile => profile.user.email_address === user
+      )
+      if (userProfile) {
+        // User has a profile
+        if (userProfile.profile === null) {
+          // User has a null profile, create a new one using POST request
+          const createResponse = await axios.post(
             `${import.meta.env.VITE_BASE_API}/profiles`,
             {
               first_name: firstName,
@@ -168,40 +274,88 @@ const Home = () => {
             }
           )
 
-          console.log('Profile Created:', response.data)
+          console.log('Profile Created:', createResponse.data)
+        } else {
+          // User has a non-null profile, update it using PUT request
+          const response = await axios.put(
+            `${import.meta.env.VITE_BASE_API}/profiles/${userProfile.id}`,
+            {
+              first_name: firstName,
+              last_name: lastName,
+              email: email,
+            },
+            {
+              headers: {
+                Authorization: `bearer ${token}`,
+              },
+            }
+          )
+
+          console.log('Profile Updated:', response.data)
         }
-      } catch (error) {
-        // Handle API errors
-        console.error('API Error:', error.message)
+      } else {
+        // User has no profile, create a new one using POST request
+        const createResponse = await axios.post(
+          `${import.meta.env.VITE_BASE_API}/profiles`,
+          {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+          },
+          {
+            headers: {
+              Authorization: `bearer ${token}`,
+            },
+          }
+        )
+
+        console.log('Profile Created:', createResponse.data)
       }
-    } else {
-      console.log('Form is incomplete. Cannot save.')
+    } catch (error) {
+      // Handle API errors
+      console.error('API Error:', error.message)
     }
   }
 
   const handleAddLinkClick = () => {
     // Limit the number of links to 3
     if (linkSections.length < 3) {
+      // Ensure that the "Remove" button is visible only on the last link
+      const isLastLink = linkSections.length === 2 // Set isLastLink to true only when there are existing links
       setLinkSections(prevSections => [
         ...prevSections,
         {
           url: '',
           selectedPlatform: '', // Initialize with an empty platform
+          isLastLink, // Pass isLastLink to the new link
         },
       ])
+
       // Make the link section visible after adding a link
       setLinkSectionVisible(true)
     }
   }
 
+  // Inside handleRemoveLink function
   const handleRemoveLink = linkIndexToRemove => {
-    setLinkSections(prevSections =>
-      prevSections.filter((section, index) => index !== linkIndexToRemove)
-    )
-    setLinkSectionVisible(prevVisible => {
-      return linkSections.length - 1 === 0 ? false : prevVisible
+    setLinkSections(prevSections => {
+      const updatedSections = prevSections.filter(
+        (section, index) => index !== linkIndexToRemove
+      )
+
+      // Update the order when removing a link
+      updatedSections.forEach((section, index) => {
+        section.order = index + 1
+      })
+
+      return updatedSections
     })
   }
+
+  // Add this useEffect hook at the end of your component
+  useEffect(() => {
+    setLinkSectionVisible(linkSections.length > 0)
+  }, [linkSections])
 
   const handleDevlinkLogoClick = () => {
     // Navigate to the home directory or any desired route
@@ -210,37 +364,90 @@ const Home = () => {
 
   const handleSave = async () => {
     if (isReadyToPublish()) {
-      const token = localStorage.getItem('token')
-
       if (!token) {
-        // If token is not present, handle the case (e.g., redirect to login)
         console.log('User not authenticated. Redirecting to login.')
-        // You can add logic here to redirect to the login page or handle authentication
         return
       }
 
       try {
-        // Construct the payload from linkSections
-        const payload = {
-          url: linkSections[0].url, // Assuming you're working with the first link, adjust as needed
-          platform: linkSections[0].selectedPlatform,
-        }
-
-        console.log('Payload:', payload)
-
-        // Make a POST request to your API endpoint with the authorization header
-        const response = await axios.post(
-          `${import.meta.env.VITE_BASE_API}/links`,
-          payload,
-          {
-            headers: {
-              Authorization: `bearer ${token}`,
-            },
-          }
+        // Fetch user links
+        const userLinksResponse = await axios.get(
+          `${import.meta.env.VITE_BASE_API}/links`
         )
+        const userLinks = userLinksResponse.data.filter(
+          link => link.user.email_address === user.email_address
+        )
+        console.log('Selected Platform:', linkSections.selectedPlatform)
+        console.log('URL:', linkSections.url)
+        console.log('User Links:', userLinks)
 
-        // Handle the API response as needed
-        console.log('API Response:', response.data)
+        // Construct the payload for each link
+        const savePromises = linkSections.map(async linkSection => {
+          // Check if the link is filled
+          if (linkSection.selectedPlatform && linkSection.url) {
+            // Check if there is an existing link with the same platform and URL
+            const existingLink = userLinks.find(
+              link =>
+                link.platform === linkSections.selectedPlatform &&
+                link.url === linkSections.url
+            )
+            console.log('exisiting link' + existingLink)
+            if (existingLink) {
+              // Existing link found, perform a PUT request to update it
+              console.log('Updating Existing Link...')
+              const response = await axios.put(
+                `${import.meta.env.VITE_BASE_API}/links/${existingLink.id}`,
+                {
+                  url: linkSection.url,
+                  platform: linkSection.selectedPlatform,
+                  userId: user.id,
+                },
+                {
+                  headers: {
+                    Authorization: `bearer ${token}`,
+                  },
+                }
+              )
+
+              console.log('Link Updated:', response.data)
+              return response
+            } else {
+              // No existing link found, perform a POST request to create a new link
+              console.log('Creating New Link...')
+              const response = await axios.post(
+                `${import.meta.env.VITE_BASE_API}/links`,
+                {
+                  url: linkSection.url,
+                  platform: linkSection.selectedPlatform,
+                  userId: user.id,
+                },
+                {
+                  headers: {
+                    Authorization: `bearer ${token}`,
+                  },
+                }
+              )
+
+              console.log('Link Created:', response.data)
+              return response
+            }
+          }
+
+          // If link is not filled, return null
+          return null
+        })
+
+        // Filter out fulfilled promises and handle responses
+        const results = await Promise.allSettled(savePromises)
+
+        const fulfilledPromises = results
+          .filter(result => result.status === 'fulfilled')
+          .map(result => result.value)
+
+        console.log('All links saved successfully!', {
+          updateResponses: fulfilledPromises.filter(response => response.data),
+          createResponses: fulfilledPromises.filter(response => !response.data),
+        })
       } catch (error) {
         // Handle API errors
         console.error('API Error:', error.message)
@@ -253,6 +460,11 @@ const Home = () => {
 
   return (
     <>
+      {isLoggedIn && (
+        <button onClick={handleLogout} className="logout-btn">
+          Logout
+        </button>
+      )}
       <div className="navbar-outer ">
         <div className="outer">
           <div className="navbar">
@@ -291,7 +503,18 @@ const Home = () => {
             <span className="inner-case"></span>
             <div className="ui-case">
               <div className="header-case">
-                <img className="ellipse-icon" src={images.ellipse}></img>
+                <div className="ellipse-icon">
+                  {profilePictureUrl ? (
+                    <img
+                      src={`data:image/png;base64,${profilePictureUrl}`}
+                      alt="Profile"
+                    />
+                  ) : (
+                    <div className="default-profile-image">
+                      {/* Your default profile image here */}
+                    </div>
+                  )}
+                </div>
                 <div className="bottom-header">
                   <span className="header-rect-1">
                     {firstName}
@@ -349,6 +572,9 @@ const Home = () => {
                       onClickRemove={() => handleRemoveLink(index)}
                       onPlatformSelect={handlePlatformSelect}
                       onUrlChange={handleUrlChange}
+                      linkSections={linkSections} // Pass linkSections as a prop
+                      setLinkSections={setLinkSections} // Pass setLinkSections as a prop
+                      isLastLink={linkSection.isLastLink} // Pass isLastLink prop
                     />
                   ))
                 ) : (
@@ -401,16 +627,27 @@ const Home = () => {
                   <div className="profile-upload">
                     <span className="profile-upload-font">Profile picture</span>
                     <div className="profile-image-area">
-                      <button className="profile-uploadimage">
+                      <button
+                        className="profile-uploadimage"
+                        onClick={() => fileInputRef.current.click()}>
                         <div className="profile-image">
                           <img
                             className="profile-default"
-                            src={images.image}></img>
+                            src={images.image}
+                            alt="Upload Image"
+                          />
                           <span className="profile-default-font">
                             + Upload Image
                           </span>
                         </div>
                       </button>
+                      <input
+                        type="file"
+                        accept=".jpeg, .jpg, .png"
+                        style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                      />
                       <span className="profile-image-validation">
                         Image must be below 1024x1024px. Use PNG or JPG format.
                       </span>
@@ -418,6 +655,7 @@ const Home = () => {
                   </div>
                 </div>
               </div>
+
               <div className="profile-input-form">
                 <div className="profile-first-name">
                   <span className="profile-firstname">First name*</span>
