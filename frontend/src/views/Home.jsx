@@ -2,6 +2,8 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useRef } from 'react'
 import LinkAddition from '../components/LinkAddition'
+import { useNavigate } from 'react-router-dom'
+
 import linkIcon from '../assets/images/icon-link.svg'
 import selectedLinkIcon from '../assets/images/ph-link-bold.svg'
 import devlinkLogo from '../assets/images/logo-devlinks-large.svg'
@@ -11,13 +13,15 @@ import illustrationEmpty from '../assets/images/illustration-empty.svg'
 import phoneMockup from '../assets/images/illustration-phone-mockup.svg'
 import image from '../assets/images/ph-image.svg'
 import ellipse from '../assets/images/ellipse-3.svg'
+import defaultPic from '../assets/images/default.jpg'
 import axios from 'axios'
 import { useAuth } from '../services/authContext'
 
 const Home = () => {
+  const navigate = useNavigate()
   const [linkSections, setLinkSections] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
-
+  const [platforms, setPlatforms] = useState([])
   const [isLinkSectionVisible, setLinkSectionVisible] = useState(false)
   const [isLinksBlockVisible, setLinksBlockVisible] = useState(true)
   const [firstName, setFirstName] = useState('')
@@ -26,26 +30,11 @@ const Home = () => {
   const [isProfileSaveVisible, setProfileSaveVisible] = useState(false)
   const fileInputRef = useRef(null)
   const [profilePictureUrl, setProfilePictureUrl] = useState(null)
+  const [links, setLinks] = useState([]) // Initialize links state as an empty array
 
   const [isUploading, setIsUploading] = useState(false)
 
   const { isLoggedIn, logout, token, user } = useAuth()
-  const [userLinks, setUserLinks] = useState([])
-
-  useEffect(() => {
-    const fetchUserLinks = async () => {
-      try {
-        const userLinksResponse = await axios.get(
-          `${import.meta.env.VITE_BASE_API}/links`
-        )
-        setUserLinks(userLinksResponse.data)
-      } catch (error) {
-        console.error('Error fetching user links:', error.message)
-      }
-    }
-
-    fetchUserLinks()
-  }, [])
 
   const images = {
     linkIcon,
@@ -57,7 +46,68 @@ const Home = () => {
     selectedLinkIcon,
     ellipse,
     image,
+    defaultPic,
   }
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        // Make an API request to fetch user profile data using the user's token
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_API}/profiles`
+        )
+        const userProfile = response.data.find(
+          profile => profile.user.email_address === user
+        )
+        if (response.status === 200 || response.status === 201) {
+          const { first_name, last_name, email } = userProfile
+          // Set the fetched profile data to the state
+          setFirstName(first_name)
+          setLastName(last_name)
+          setEmail(email)
+          setProfilePictureUrl(userProfile.image.image_data)
+          // Set links data
+
+          const userLinks = userProfile.links || []
+
+          // ... (rest of the code for setting links, firstName, lastName, etc.)
+
+          const platforms = userLinks.map(link => link.platform)
+
+          // Set the platforms in state
+          setPlatforms(platforms)
+
+          setLinks(userLinks)
+
+          // Automatically open links section and populate it
+          const linkSectionsData = userLinks.map((link, index) => {
+            const selectedPlatform = link.platform
+
+            const mappedLink = {
+              url: link.url,
+              platform: selectedPlatform,
+              date: link.date,
+              isLastLink: index === userLinks.length - 1,
+            }
+
+            console.log('Mapped Link:', mappedLink)
+            return mappedLink
+          })
+
+          console.log('Link Sections Data:', linkSectionsData)
+          setLinkSections(linkSectionsData)
+        } else {
+          console.error('Failed to fetch profile data')
+        }
+      } catch (error) {
+        console.error('Error fetching profile data', error)
+      }
+    }
+
+    if (isLoggedIn) {
+      fetchProfileData() // Fetch profile data only if the user is logged in
+    }
+  }, [isLoggedIn, token])
 
   // Add this useEffect hook at the end of your component
   useEffect(() => {
@@ -76,6 +126,7 @@ const Home = () => {
   const handleLogout = () => {
     // Call the logout function from the context
     logout()
+    navigate('/login')
   }
   const toggleLinksBlockVisibility = visible => {
     setLinksBlockVisible(visible)
@@ -180,7 +231,6 @@ const Home = () => {
   }
 
   const getColorForPlatform = platform => {
-    // You can define your color mappings here based on the platform
     const colorMappings = {
       GitHub: '#000000',
       YouTube: '#FF0000',
@@ -188,7 +238,9 @@ const Home = () => {
       // ... (other platforms and colors)
     }
 
-    return colorMappings[platform] || '' // Return the color or an empty string if not found
+    const color = colorMappings[platform] || ''
+
+    return color
   }
 
   const isReadyToPublish = () => {
@@ -362,6 +414,14 @@ const Home = () => {
     window.location.reload()
   }
 
+  // eslint-disable-next-line no-unused-vars
+  const handleSaveLink = (linkNumber, url) => {
+    setLinkSections(prevSections => {
+      const updatedSections = [...prevSections]
+      updatedSections[linkNumber - 1].isSaved = true
+      return updatedSections
+    })
+  }
   const handleSave = async () => {
     if (isReadyToPublish()) {
       if (!token) {
@@ -377,21 +437,20 @@ const Home = () => {
         const userLinks = userLinksResponse.data.filter(
           link => link.user.email_address === user.email_address
         )
-        console.log('Selected Platform:', linkSections.selectedPlatform)
-        console.log('URL:', linkSections.url)
-        console.log('User Links:', userLinks)
 
         // Construct the payload for each link
-        const savePromises = linkSections.map(async linkSection => {
+        const savePromises = linkSections.map(async (linkSection, index) => {
+          await handleSaveLink(index + 1, linkSection.url)
+
           // Check if the link is filled
           if (linkSection.selectedPlatform && linkSection.url) {
             // Check if there is an existing link with the same platform and URL
             const existingLink = userLinks.find(
               link =>
-                link.platform === linkSections.selectedPlatform &&
-                link.url === linkSections.url
+                link.platform === linkSection.selectedPlatform &&
+                link.url === linkSection.url
             )
-            console.log('exisiting link' + existingLink)
+
             if (existingLink) {
               // Existing link found, perform a PUT request to update it
               console.log('Updating Existing Link...')
@@ -511,7 +570,7 @@ const Home = () => {
                     />
                   ) : (
                     <div className="default-profile-image">
-                      {/* Your default profile image here */}
+                      <img src={images.defaultPic}></img>
                     </div>
                   )}
                 </div>
@@ -524,26 +583,56 @@ const Home = () => {
                 </div>
               </div>
               <div className="bottom-case">
-                <div className="bottom-case">
-                  {linkSections.map((linkSection, index) => (
-                    <button
-                      key={index}
-                      className={`rectangle-link rectangle-show-${index + 1} ${
-                        linkSection.selectedPlatform
-                          ? linkSection.selectedPlatform
-                              .toLowerCase()
-                              .replace(/\s+/g, '-')
-                          : ''
-                      }`}
-                      style={{
-                        backgroundColor: getColorForPlatform(
-                          linkSection.selectedPlatform
-                        ),
-                      }}>
-                      {linkSection.selectedPlatform}
-                    </button>
-                  ))}
-                </div>
+                {linkSections.map((linkSection, index) => (
+                  <button
+                    key={index}
+                    className={`rectangle-link rectangle-show-${index + 1} ${
+                      linkSection.selectedPlatform
+                        ? linkSection.selectedPlatform
+                            .toLowerCase()
+                            .replace(/\s+/g, '-')
+                        : ''
+                    }`}
+                    style={{
+                      backgroundColor:
+                        getColorForPlatform(linkSection.selectedPlatform) ||
+                        (platforms[index] &&
+                          getColorForPlatform(platforms[index])),
+                    }}>
+                    {linkSection.selectedPlatform ? (
+                      <>
+                        <img
+                          className={`${linkSection.selectedPlatform.toLowerCase()}-icon`}
+                          src={
+                            images[
+                              `${linkSection.selectedPlatform.toLowerCase()}Icon`
+                            ]
+                          }
+                          alt={`${linkSection.selectedPlatform} Icon`}
+                        />
+                        <span
+                          className={`${linkSection.selectedPlatform.toLowerCase()}`}>
+                          {linkSection.selectedPlatform}
+                        </span>
+                      </>
+                    ) : (
+                      platforms[index] && (
+                        <>
+                          <img
+                            className={`${platforms[index].toLowerCase()}-icon`}
+                            src={
+                              images[`${platforms[index].toLowerCase()}Icon`]
+                            }
+                            alt={`${platforms[index]} Icon`}
+                          />
+                          <span className={`${platforms[index].toLowerCase()}`}>
+                            {platforms[index]}
+                          </span>
+                        </>
+                      )
+                    )}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -575,6 +664,9 @@ const Home = () => {
                       linkSections={linkSections} // Pass linkSections as a prop
                       setLinkSections={setLinkSections} // Pass setLinkSections as a prop
                       isLastLink={linkSection.isLastLink} // Pass isLastLink prop
+                      handleSaveLink={handleSaveLink} // Pass handleSaveLink as a prop
+                      selectedPlatformProp={linkSection.platform} // Pass selectedPlatform as a prop
+                      urlProp={linkSection.url} // Pass url as a prop
                     />
                   ))
                 ) : (

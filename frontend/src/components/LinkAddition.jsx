@@ -41,6 +41,10 @@ const LinkAddition = ({
   setLinkSections,
   showRemoveButton,
   isLastLink,
+  areLinksSaved,
+  handleSaveLink,
+  selectedPlatformProp,
+  urlProp,
 }) => {
   const [isContentVisible, setIsContentVisible] = useState(true)
   const [selectedPlatform, setSelectedPlatform] = useState(null)
@@ -50,6 +54,22 @@ const LinkAddition = ({
   const [lastSelectedPlatform, setLastSelectedPlatform] = useState(null)
 
   const { token, user } = useAuth()
+
+  const isSaved = linkSections[linkNumber - 1]?.isSaved || false
+
+  const handleUrlChange = e => {
+    if (isSaved === false) {
+      const newUrl = e.target.value
+      setUrl(newUrl)
+      onUrlChange(linkNumber, newUrl)
+    }
+  }
+
+  useEffect(() => {
+    // Update local state based on props when they change
+    setSelectedPlatform(selectedPlatformProp)
+    setUrl(urlProp)
+  }, [selectedPlatformProp, urlProp])
 
   useEffect(() => {
     // Additional initialization logic if needed
@@ -97,12 +117,6 @@ const LinkAddition = ({
     GitLab: useState(false),
   }
 
-  const handleUrlChange = e => {
-    const newUrl = e.target.value
-    setUrl(newUrl)
-    onUrlChange(linkNumber, newUrl)
-  }
-
   const handlePlatformHover = platform => {
     platformStates[platform][1](true)
   }
@@ -121,18 +135,21 @@ const LinkAddition = ({
       const userProfileResponse = await axios.get(
         `${import.meta.env.VITE_BASE_API}/users`
       )
+      console.log('lets see ' + userProfileResponse)
       const userProfile = userProfileResponse.data.find(
         email => email.email_address === user
       )
+      console.log('lets see ' + userProfile)
 
       if (userProfile) {
         const profileResponse = await axios.get(
           `${import.meta.env.VITE_BASE_API}/links`
         )
+        console.log('delete backend ' + profileResponse)
         const linkToDeleteBackend = profileResponse.data.find(
           link => link.platform === platformName && link.url === urlName
         )
-
+        console.log('delete backend ' + linkToDeleteBackend)
         if (linkToDeleteBackend) {
           console.log('Link to delete from backend:', linkToDeleteBackend)
 
@@ -175,18 +192,21 @@ const LinkAddition = ({
 
   // Inside handleDropdownClick function
   const handleDropdownClick = () => {
-    setIsDropdownVisible(prevValue => !prevValue)
+    // Only toggle the dropdown if it is not selected
+    if (!selectedPlatform) {
+      setIsDropdownVisible(prevValue => !prevValue)
 
-    if (!isDropdownVisible && lastSelectedPlatform) {
-      // Find the index of lastSelectedPlatform in linkSections
-      const index = linkSections.findIndex(
-        section => section.platform === lastSelectedPlatform
-      )
+      if (!isDropdownVisible && lastSelectedPlatform) {
+        // Find the index of lastSelectedPlatform in linkSections
+        const index = linkSections.findIndex(
+          section => section.platform === lastSelectedPlatform
+        )
 
-      // Display the icon and platform at the found index
-      if (index !== -1) {
-        setSelectedPlatform(linkSections[index].platform)
-        setLastSelectedPlatform(linkSections[index].platform)
+        // Display the icon and platform at the found index
+        if (index !== -1) {
+          setSelectedPlatform(linkSections[index].platform)
+          setLastSelectedPlatform(linkSections[index].platform)
+        }
       }
     }
   }
@@ -203,7 +223,12 @@ const LinkAddition = ({
 
     setSelectedPlatform(platform) // Update the selected platform state
     onPlatformSelect(linkNumber, platform)
-    setIsDropdownVisible(false) // Close the dropdown after selecting a platform
+
+    // Keep the dropdown disabled after selecting a platform
+    // Comment the following line
+    setLastSelectedPlatform(platform)
+
+    setIsDropdownVisible(false)
   }
 
   return (
@@ -314,6 +339,7 @@ const LinkAddition = ({
                 placeholder={`e.g. https://www.${selectedPlatform?.toLowerCase()}.com`}
                 value={url}
                 onChange={handleUrlChange}
+                readOnly={isSaved ? 'readOnly' : undefined}
               />
             </div>
           </>
