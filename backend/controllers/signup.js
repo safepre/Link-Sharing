@@ -11,6 +11,13 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Passwords do not match' })
     }
 
+    // Check if password meets the minimum length requirement
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ error: 'Password must be at least 8 characters long' })
+    }
+
     // Hash the password
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)

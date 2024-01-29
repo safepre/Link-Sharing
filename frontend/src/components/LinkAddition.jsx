@@ -145,7 +145,7 @@ const LinkAddition = ({
         const profileResponse = await axios.get(
           `${import.meta.env.VITE_BASE_API}/links`
         )
-        console.log('delete backend ' + profileResponse)
+        console.log('delete backend ' + profileResponse.data)
         const linkToDeleteBackend = profileResponse.data.find(
           link => link.platform === platformName && link.url === urlName
         )
