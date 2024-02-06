@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Link, Profile } = require('../models')
+const { Link, Profile, User } = require('../models')
 const { tokenExtractor, userExtractor } = require('../util/middleware')
 
 router.get('/', async (req, res) => {
@@ -10,6 +10,10 @@ router.get('/', async (req, res) => {
         model: Profile,
         attributes: ['first_name', 'last_name'],
       },
+      {
+        model: User,
+        attributes: ['email_address'],
+      },
     ],
   })
   res.json(links)
@@ -17,14 +21,31 @@ router.get('/', async (req, res) => {
 
 router.post('/', tokenExtractor, userExtractor, async (req, res) => {
   try {
+    // Check if the link already exists for the user
+    const existingLink = await Link.findOne({
+      where: {
+        userId: req.user.id,
+        url: req.body.url,
+        platform: req.body.platform,
+      },
+    })
+
+    if (existingLink) {
+      // Link already exists, handle accordingly (e.g., return an error response)
+      return res.status(400).json({ error: 'Duplicate link' })
+    }
+
+    // Link doesn't exist, proceed with creating
     const link = await Link.create({
       ...req.body,
       profileId: req.profile.id,
+      userId: req.user.id,
       date: new Date(),
     })
+
     res.json(link)
   } catch (error) {
-    return res.status(400).json({ error })
+    return res.status(400).json({ error: error.errors })
   }
 })
 

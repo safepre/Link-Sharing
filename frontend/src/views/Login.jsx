@@ -13,6 +13,7 @@ function LoginForm() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState(false)
   const { login } = useAuth() // Access the login function from the context
 
   const handleEmailChange = e => {
@@ -44,6 +45,7 @@ function LoginForm() {
       }
     } catch (error) {
       console.error('API Error:', error.message)
+      setError(true)
     }
   }
 
@@ -61,8 +63,10 @@ function LoginForm() {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <div className="form-label">Email</div>
-            <div className="input-with-icon">
+            <div className={`form-label ${error ? 'error-font-styling' : ''}`}>
+              Email
+            </div>
+            <div className={`input-with-icon ${error ? 'error-styling' : ''}`}>
               <span className="input-icon">
                 <img src={emailIcon} alt="" />
               </span>
@@ -77,8 +81,10 @@ function LoginForm() {
             </div>
           </div>
           <div className="form-group">
-            <div className="form-label">Password</div>
-            <div className="input-with-icon">
+            <div className={`form-label ${error ? 'error-font-styling' : ''}`}>
+              Password
+            </div>
+            <div className={`input-with-icon ${error ? 'error-styling' : ''}`}>
               <span className="input-icon">
                 <img src={lockIcon} alt="" />
               </span>

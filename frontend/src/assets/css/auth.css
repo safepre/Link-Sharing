@@ -1,7 +1,14 @@
 * {
   font-family: Instrument Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 18px */
 }
-
+.font-validation {
+  color: var(--Grey, #737373);
+  align-self: stretch;
+}
 .login-from-wrapper {
   display: flex;
   flex-direction: column;
@@ -51,7 +58,7 @@
   width: 16px;
   height: 16px;
   position: absolute;
-  top: 12px;
+  top: 15px;
   left: 10px;
 }
 .form-group input {
@@ -64,6 +71,15 @@
   outline: none;
   transition: 0.3s ease-in-out;
 }
+body .error-font-styling {
+  color: var(--Red, #ff3939) !important;
+}
+
+.error-styling {
+  border-radius: 8px;
+  border: 1px solid var(--Red, #ff3939);
+  background: var(--White, #fff);
+}
 .form-group input::placeholder {
   color: var(--Dark-Grey, #d9d9d9);
 }
@@ -71,6 +87,7 @@
   border: 1px solid var(--Purple, #633cff);
   box-shadow: 0px 0px 32px 0px rgba(99, 60, 255, 0.25);
 }
+
 .login-form .submit-btn {
   border-radius: 0.5rem;
   background: var(--Purple, #633cff);
@@ -80,6 +97,13 @@
   outline: none;
   border: none;
 }
+.login-form .submit-btn:hover {
+  border-radius: 8px;
+  background: var(--purple-hover-color, #beadff);
+  /* active-selection */
+  box-shadow: 0px 0px 32px 0px rgba(99, 60, 255, 0.25);
+}
+
 .login-form .register {
   color: var(--Grey, #737373);
   text-align: center;
@@ -91,4 +115,42 @@
 .login-form .register a {
   color: var(--Purple, #633cff);
   cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .login-from-wrapper {
+    display: inline-flex;
+    padding: 226px 146px 225px 146px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--Light-Grey, #fafafa);
+  }
+}
+
+@media (max-width: 400px) {
+  .login-from-wrapper {
+    display: flex;
+    width: 375px;
+    height: 812px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--Light-Grey, #fafafa);
+  }
+  .header {
+    flex-shrink: 0;
+    width: 182.5px;
+    height: 40px;
+  }
+  .login-form {
+    display: flex;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 64px;
+    flex: 1 0 0;
+    align-self: stretch;
+    box-shadow: initial; /* or box-shadow: initial; */
+  }
 }

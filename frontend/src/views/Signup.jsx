@@ -12,6 +12,7 @@ function SignupForm() {
   const history = useNavigate()
   const emailRef = useRef()
   const passwordRef = useRef()
+  const [error, setError] = useState(false)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -39,7 +40,7 @@ function SignupForm() {
     } catch (error) {
       // Handle errors
       console.error('API Error:', error.message)
-      //PLEASE ADD A INTERACTIVE ERROR MESSAGE IN THE INPUT THAT SAYS 'Invalid'
+      setError(true)
     }
     // You can add your validation logic here
     // eslint-disable-next-line no-undef
@@ -58,8 +59,10 @@ function SignupForm() {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <div className="form-label">Email Address</div>
-            <div className="input-with-icon">
+            <div className={`form-label ${error ? 'error-font-styling' : ''}`}>
+              Email
+            </div>
+            <div className={`input-with-icon ${error ? 'error-styling' : ''}`}>
               <span className="input-icon">
                 <img src={emailIcon} alt="" />
               </span>
@@ -73,8 +76,10 @@ function SignupForm() {
             </div>
           </div>
           <div className="form-group">
-            <div className="form-label">Create password</div>
-            <div className="input-with-icon">
+            <div className={`form-label ${error ? 'error-font-styling' : ''}`}>
+              Password
+            </div>
+            <div className={`input-with-icon ${error ? 'error-styling' : ''}`}>
               <span className="input-icon">
                 <img src={lockIcon} alt="" />
               </span>
@@ -117,6 +122,9 @@ function SignupForm() {
               />
             </div>
           </div> */}
+          <span className="font-validation">
+            Password must contains at least 8 characters
+          </span>
           <div className="login-btn">
             <button className="submit-btn" type="submit">
               Create new account
