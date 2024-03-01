@@ -9,6 +9,7 @@ export default {
           gray: '#333',
           grey: '#737373',
         },
+        'light-purple': '#efebff',
       },
       boxShadow: {
         ml: '0px 0px 32px 0px rgba(0, 0, 0, 0.10)',
@@ -16,4 +17,4 @@ export default {
     },
   },
   plugins: [],
-};
+}

@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+.w-44 {
+  width: unset; /* This will remove the width styling */
+}
+
 img,
 svg,
 video,
@@ -917,6 +921,17 @@ object {
   line-height: 150%;
 }
 
+.linkedin-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
+}
+
+.linkedin-icon {
+  width: 15px;
+  margin-bottom: 3px;
+}
+
 .Facebook-platform {
   display: flex;
   align-items: center;
@@ -1102,6 +1117,17 @@ object {
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
+}
+
+.leetcode-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
+}
+
+.leetcode-icon {
+  width: 15px;
+  margin-bottom: 3px;
 }
 
 .GitLab-platform {
@@ -1430,6 +1456,24 @@ object {
   font-weight: 400;
   line-height: 150%;
 }
+.first-name-render,
+.last-name-render {
+  color: var(--Dark-Grey, #333);
+  font-family: Instrument Sans;
+  font-style: normal;
+  font-weight: bold; /* Making first name and last name bold */
+  font-size: 1.5em; /* Adjusting font size */
+  line-height: 150%;
+}
+
+.email-render {
+  color: gray; /* Changing email color to gray */
+  font-family: Instrument Sans;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1em; /* Adjusting font size for email */
+  line-height: 150%;
+}
 
 .profile-first-name-input:focus,
 .profile-last-name-input:focus,
@@ -1590,4 +1634,15 @@ object {
   align-items: center;
   gap: 25px;
   align-self: stretch;
+}
+.github-white {
+}
+
+.leetcode-white {
+  margin-left: 12px;
+  margin-bottom: 2px;
+}
+
+.linkedin-white {
+  margin-left: 8px;
 }

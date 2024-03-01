@@ -27,6 +27,13 @@ Profile.init(
         max: 23,
       },
     },
+    preview_link: {
+      type: DataTypes.STRING,
+      validate: {
+        min: 8,
+        max: 15,
+      },
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

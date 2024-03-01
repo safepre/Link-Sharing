@@ -7,6 +7,7 @@ import LoginForm from './views/Login'
 import SignupForm from './views/Signup'
 import Home from './views/Home'
 import Preview from './views/Preview'
+import GeneratedLinkPage from './views/GeneratedLinkPage'
 import { AuthProvider } from './services/authContext'
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: '/preview',
     element: <Preview />,
+  },
+  {
+    path: '/generated-link/:generatedParam',
+    element: <GeneratedLinkPage />,
   },
 ])
 

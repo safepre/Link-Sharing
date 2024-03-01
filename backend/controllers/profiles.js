@@ -79,6 +79,7 @@ router.put('/:id', tokenExtractor, userExtractor, async (req, res) => {
     if (profile) {
       ;(profile.first_name = req.body.first_name),
         (profile.last_name = req.body.last_name),
+        (profile.preview_link = req.body.preview_link),
         (profile.email = req.body.email),
         (profile.updated_at = new Date()),
         await profile.save()

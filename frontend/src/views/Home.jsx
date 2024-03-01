@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useRef } from 'react'
 import LinkAddition from '../components/LinkAddition'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import linkIcon from '../assets/images/icon-link.svg'
 import selectedLinkIcon from '../assets/images/ph-link-bold.svg'
@@ -19,7 +20,7 @@ import githubIcon from '../assets/images/white-github.svg'
 import youtubeIcon from '../assets/images/white-youtube.svg'
 import twitchIcon from '../assets/images/icon-twitch.svg'
 import stackoverflowIcon from '../assets/images/icon-stack-overflow.svg'
-import linkedinIcon from '../assets/images/icon-linkedin.svg'
+import linkedinIcon from '../assets/images/white-linkedin.svg'
 import gitlabIcon from '../assets/images/icon-gitlab.svg'
 import devtoIcon from '../assets/images/icon-devto.svg'
 import freecodecampIcon from '../assets/images/icon-freecodecamp.svg'
@@ -28,11 +29,10 @@ import hashnodeIcon from '../assets/images/icon-hashnode.svg'
 import codepenIcon from '../assets/images/icon-codepen.svg'
 import codewarsIcon from '../assets/images/icon-codewars.svg'
 import khanacademyIcon from '../assets/images/khan-academy-icon-svgrepo-com.svg'
-import leetcodeIcon from '../assets/images/leetcode-svgrepo-com.svg'
+import leetcodeIcon from '../assets/images/White-LeetCode.svg'
 import xIcon from '../assets/images/X_logo_2023_original.svg'
 import replitIcon from '../assets/images/New_Replit_Logo.svg'
 import facebookIcon from '../assets/images/icon-facebook.svg'
-import arrowIcon from '../assets/images/arrow.svg'
 import { useAuth } from '../services/authContext'
 
 const Home = () => {
@@ -40,9 +40,9 @@ const Home = () => {
   const [linkSections, setLinkSections] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [platforms, setPlatforms] = useState([])
-  const [activeButton, setActiveButton] = useState('links')
-  const [isLinkSectionVisible, setLinkSectionVisible] = useState(false)
-  const [isLinksBlockVisible, setLinksBlockVisible] = useState(true)
+  const [activeButton, setActiveButton] = useState('profile')
+  const [isLinkSectionVisible, setLinkSectionVisible] = useState(true)
+  const [isLinksBlockVisible, setLinksBlockVisible] = useState(false)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -67,7 +67,6 @@ const Home = () => {
     ellipse,
     image,
     defaultPic,
-    arrowIcon,
   }
 
   const icons = {
@@ -133,11 +132,9 @@ const Home = () => {
               isLastLink: index === userLinks.length - 1,
             }
 
-            console.log('Mapped Link:', mappedLink)
             return mappedLink
           })
 
-          console.log('Link Sections Data:', linkSectionsData)
           setLinkSections(linkSectionsData)
         } else {
           console.error('Failed to fetch profile data')
@@ -278,6 +275,7 @@ const Home = () => {
       GitHub: '#000000',
       YouTube: '#FF0000',
       LinkedIn: '#0077B5',
+      LeetCode: '#FFBF00',
       // ... (other platforms and colors)
     }
 
@@ -363,6 +361,7 @@ const Home = () => {
               first_name: firstName,
               last_name: lastName,
               email: email,
+              preview_link: 'l1nk',
             },
             {
               headers: {
@@ -380,6 +379,7 @@ const Home = () => {
               first_name: firstName,
               last_name: lastName,
               email: email,
+              preview_link: 'l1nk',
             },
             {
               headers: {
@@ -398,6 +398,7 @@ const Home = () => {
             first_name: firstName,
             last_name: lastName,
             email: email,
+            preview_link: 'l1nk',
           },
           {
             headers: {
@@ -568,318 +569,333 @@ const Home = () => {
       console.log('Form is incomplete. Cannot save.')
     }
   }
+  links.forEach(link => {
+    console.log(link.platform)
+  })
 
   return (
     <>
-      <div className="whole-page">
-        {isLoggedIn && (
-          <button onClick={handleLogout} className="logout-btn">
-            Logout
-          </button>
-        )}
-        <div className="navbar-outer ">
-          <div className="outer">
-            <div className="navbar">
-              <button
-                className="devlink-logo-btn"
-                onClick={handleDevlinkLogoClick}>
-                <img className="devlink-logo" src={images.devlinkLogo}></img>
-              </button>
-              <div className="link-profile">
+      {isLoggedIn && (
+        <div className="whole-page">
+          <div className="navbar-outer ">
+            <div className="outer">
+              <div className="navbar">
                 <button
-                  className={`link-box ${
-                    activeButton === 'links' ? 'active' : ''
-                  }`}
-                  onClick={() => toggleLinksBlockVisibility(true, 'links')}>
-                  <img
-                    className={`link-icon ${
+                  className="devlink-logo-btn"
+                  onClick={handleDevlinkLogoClick}>
+                  <img className="devlink-logo" src={images.devlinkLogo}></img>
+                </button>
+                <div className="link-profile">
+                  <button
+                    className={`link-box ${
                       activeButton === 'links' ? 'active' : ''
                     }`}
-                    src={images.selectedLinkIcon}
-                    alt="Link Icon"></img>
-                  <span
-                    className={`link-font ${
-                      activeButton === 'links' ? 'active' : ''
-                    }`}>
-                    Links
-                  </span>
-                </button>
+                    onClick={() => toggleLinksBlockVisibility(true, 'links')}>
+                    <img
+                      className={`link-icon ${
+                        activeButton === 'links' ? 'active' : ''
+                      }`}
+                      src={images.selectedLinkIcon}
+                      alt="Link Icon"></img>
+                    <span
+                      className={`link-font ${
+                        activeButton === 'links' ? 'active' : ''
+                      }`}>
+                      Links
+                    </span>
+                  </button>
 
-                <button
-                  className={`profile-box ${
-                    activeButton === 'profile' ? 'active' : ''
-                  }`}
-                  onClick={() => toggleLinksBlockVisibility(false, 'profile')}>
-                  <img
-                    className={`profile-icon ${
+                  <button
+                    className={`profile-box ${
                       activeButton === 'profile' ? 'active' : ''
                     }`}
-                    src={images.profileDetailIcon}
-                    alt="Profile Icon"></img>
-                  <span
-                    className={`profile-font ${
-                      activeButton === 'profile' ? 'active' : ''
-                    }`}>
-                    Profile Details
-                  </span>
-                </button>
+                    onClick={() =>
+                      toggleLinksBlockVisibility(false, 'profile')
+                    }>
+                    <img
+                      className={`profile-icon ${
+                        activeButton === 'profile' ? 'active' : ''
+                      }`}
+                      src={images.profileDetailIcon}
+                      alt="Profile Icon"></img>
+                    <span
+                      className={`profile-font ${
+                        activeButton === 'profile' ? 'active' : ''
+                      }`}>
+                      Profile Details
+                    </span>
+                  </button>
+                </div>
+                {isLoggedIn && (
+                  <Link to="/preview">
+                    <div className="preview-box">
+                      <span className="preview-font">Preview</span>
+                    </div>
+                  </Link>
+                )}
               </div>
-
-              <button className="preview-box">
-                <span className="preview-font">Preview</span>
-              </button>
             </div>
           </div>
-        </div>
-        <div className="phonecase-links">
-          <div className="phonecase-block">
-            <div className="preview-section">
-              <span className="outer-case"></span>
-              <span className="inner-case"></span>
-              <div className="ui-case">
-                <div className="header-case">
-                  <div className="ellipse-icon">
-                    {profilePictureUrl ? (
-                      <img
-                        src={`data:image/png;base64,${profilePictureUrl}`}
-                        alt="Profile"
-                      />
+          <div className="phonecase-links">
+            <div className="phonecase-block">
+              <div className="preview-section">
+                <span className="outer-case"></span>
+                <span className="inner-case"></span>
+                <div className="ui-case">
+                  <div className="header-case">
+                    <div className="ellipse-icon">
+                      {profilePictureUrl ? (
+                        <img
+                          src={`data:image/png;base64,${profilePictureUrl}`}
+                          alt="Profile"
+                        />
+                      ) : (
+                        <div className="default-profile-image">
+                          <img src={images.defaultPic}></img>
+                        </div>
+                      )}
+                    </div>
+                    <div className="bottom-header">
+                      {!firstName && <span className="header-rect-1"></span>}
+                      <span className="first-name-render">
+                        {' '}
+                        {firstName} {lastName}
+                      </span>
+
+                      {!email && <span className="header-rect-2"></span>}
+                      <span className="email-render"> {email} </span>
+                    </div>
+                  </div>
+                  <div className="bottom-case">
+                    {linkSections.map((linkSection, index) => (
+                      <button
+                        key={index}
+                        className={`rectangle-link rectangle-show-${
+                          index + 1
+                        } ${
+                          linkSection.selectedPlatform
+                            ? linkSection.selectedPlatform
+                                .toLowerCase()
+                                .replace(/\s+/g, '-')
+                            : ''
+                        }`}
+                        style={{
+                          backgroundColor:
+                            getColorForPlatform(linkSection.selectedPlatform) ||
+                            (platforms[index] &&
+                              getColorForPlatform(platforms[index])),
+                        }}>
+                        {linkSection.selectedPlatform ? (
+                          <>
+                            <img
+                              className={`${linkSection.selectedPlatform.toLowerCase()}-white`}
+                              src={
+                                icons[
+                                  `${linkSection.selectedPlatform.toLowerCase()}Icon`
+                                ]
+                              }
+                              alt={`${linkSection.selectedPlatform} Icon`}
+                            />
+                            <span
+                              className={`${linkSection.selectedPlatform.toLowerCase()}-font`}>
+                              {linkSection.selectedPlatform}
+                            </span>
+                          </>
+                        ) : (
+                          platforms[index] && (
+                            <>
+                              <img
+                                className={`${platforms[
+                                  index
+                                ].toLowerCase()}-white`}
+                                src={
+                                  icons[`${platforms[index].toLowerCase()}Icon`]
+                                }
+                                alt={`${platforms[index]} Icon`}
+                              />
+                              <span
+                                className={`${platforms[
+                                  index
+                                ].toLowerCase()}-font`}>
+                                {platforms[index]}
+                              </span>
+                            </>
+                          )
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="links-block"
+              style={{ display: isLinksBlockVisible ? 'flex' : 'none' }}>
+              <div className="links-area">
+                <div className="links-top">
+                  <span className="links-font-header">
+                    {' '}
+                    Customize your links
+                  </span>
+                  <span className="links-font">
+                    Add/edit/remove links below and then share all your profiles
+                    with the world!
+                  </span>
+
+                  <div className="links-bottom">
+                    <button className="add-link" onClick={handleAddLinkClick}>
+                      + Add new link
+                    </button>
+                    {isLinkSectionVisible ? (
+                      linkSections.map((linkSection, index) => (
+                        <LinkAddition
+                          key={index}
+                          linkNumber={index + 1}
+                          onClickRemove={() => handleRemoveLink(index)}
+                          onPlatformSelect={handlePlatformSelect}
+                          onUrlChange={handleUrlChange}
+                          linkSections={linkSections} // Pass linkSections as a prop
+                          setLinkSections={setLinkSections} // Pass setLinkSections as a prop
+                          isLastLink={linkSection.isLastLink} // Pass isLastLink prop
+                          handleSaveLink={handleSaveLink} // Pass handleSaveLink as a prop
+                          selectedPlatformProp={linkSection.platform} // Pass selectedPlatform as a prop
+                          urlProp={linkSection.url} // Pass url as a prop
+                        />
+                      ))
                     ) : (
-                      <div className="default-profile-image">
-                        <img src={images.defaultPic}></img>
+                      <div className="illustration-area">
+                        <div className="illustration-area-text">
+                          <img src={images.illustrationEmpty}></img>
+                          <div className="illustration-text">
+                            <span className="top-text">
+                              {' '}
+                              Let's get you started
+                            </span>
+                            <span className="bottom-text">
+                              Use the “Add new link” button to get started. Once
+                              you have more than one link, you can reorder and
+                              edit them. We’re here to help you share your
+                              profiles with everyone!
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
-                  <div className="bottom-header">
-                    <span className="header-rect-1">
-                      {firstName}
-                      {lastName}
-                    </span>
-                    <span className="header-rect-2">{email}</span>
-                  </div>
                 </div>
-                <div className="bottom-case">
-                  {linkSections.map((linkSection, index) => (
-                    <button
-                      key={index}
-                      className={`rectangle-link rectangle-show-${index + 1} ${
-                        linkSection.selectedPlatform
-                          ? linkSection.selectedPlatform
-                              .toLowerCase()
-                              .replace(/\s+/g, '-')
-                          : ''
-                      }`}
-                      style={{
-                        backgroundColor:
-                          getColorForPlatform(linkSection.selectedPlatform) ||
-                          (platforms[index] &&
-                            getColorForPlatform(platforms[index])),
-                      }}>
-                      {linkSection.selectedPlatform ? (
-                        <>
-                          <img
-                            className={`${linkSection.selectedPlatform.toLowerCase()}-icon`}
-                            src={
-                              icons[
-                                `${linkSection.selectedPlatform.toLowerCase()}Icon`
-                              ]
-                            }
-                            alt={`${linkSection.selectedPlatform} Icon`}
-                          />
-                          <span
-                            className={`${linkSection.selectedPlatform.toLowerCase()}-font`}>
-                            {linkSection.selectedPlatform}
-                          </span>
-                          <img className="arrow" src={images.arrowIcon} />
-                        </>
-                      ) : (
-                        platforms[index] && (
-                          <>
-                            <img
-                              className={`${platforms[
-                                index
-                              ].toLowerCase()}-icon`}
-                              src={
-                                images[`${platforms[index].toLowerCase()}Icon`]
-                              }
-                              alt={`${platforms[index]} Icon`}
-                            />
-                            <span
-                              className={`${platforms[index].toLowerCase()}`}>
-                              {platforms[index]}
-                            </span>
-                          </>
-                        )
-                      )}
+              </div>
+              <div className="link-save">
+                <span className="rectangle-dropdown-2"></span>
+                <div className="link-rectangle-format">
+                  <div
+                    className="link-button-style"
+                    style={{
+                      backgroundColor: isReadyToPublish()
+                        ? 'var(--Purple, #633cff)'
+                        : 'transparent',
+                    }}>
+                    <button className="link-save-publish" onClick={handleSave}>
+                      Save
                     </button>
-                  ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div
-            className="links-block"
-            style={{ display: isLinksBlockVisible ? 'flex' : 'none' }}>
-            <div className="links-area">
-              <div className="links-top">
-                <span className="links-font-header"> Customize your links</span>
-                <span className="links-font">
-                  Add/edit/remove links below and then share all your profiles
-                  with the world!
-                </span>
-
-                <div className="links-bottom">
-                  <button className="add-link" onClick={handleAddLinkClick}>
-                    + Add new link
-                  </button>
-                  {isLinkSectionVisible ? (
-                    linkSections.map((linkSection, index) => (
-                      <LinkAddition
-                        key={index}
-                        linkNumber={index + 1}
-                        onClickRemove={() => handleRemoveLink(index)}
-                        onPlatformSelect={handlePlatformSelect}
-                        onUrlChange={handleUrlChange}
-                        linkSections={linkSections} // Pass linkSections as a prop
-                        setLinkSections={setLinkSections} // Pass setLinkSections as a prop
-                        isLastLink={linkSection.isLastLink} // Pass isLastLink prop
-                        handleSaveLink={handleSaveLink} // Pass handleSaveLink as a prop
-                        selectedPlatformProp={linkSection.platform} // Pass selectedPlatform as a prop
-                        urlProp={linkSection.url} // Pass url as a prop
-                      />
-                    ))
-                  ) : (
-                    <div className="illustration-area">
-                      <div className="illustration-area-text">
-                        <img src={images.illustrationEmpty}></img>
-                        <div className="illustration-text">
-                          <span className="top-text">
-                            {' '}
-                            Let's get you started
-                          </span>
-                          <span className="bottom-text">
-                            Use the “Add new link” button to get started. Once
-                            you have more than one link, you can reorder and
-                            edit them. We’re here to help you share your
-                            profiles with everyone!
+            {isLinksBlockVisible === false && (
+              <div className="profile-area">
+                <div className="profile-block">
+                  <div className="profile-header">
+                    <span className="profile-header-font">Profile Details</span>
+                    <span className="profile-subheader-font">
+                      Add your details to create a personal touch to your
+                      profile
+                    </span>
+                  </div>
+                  <div className="profile-upload-form">
+                    <div className="profile-upload-area">
+                      <div className="profile-upload">
+                        <span className="profile-upload-font">
+                          Profile picture
+                        </span>
+                        <div className="profile-image-area">
+                          <button
+                            className="profile-uploadimage"
+                            onClick={() => fileInputRef.current.click()}>
+                            <div className="profile-image">
+                              <img
+                                className="profile-default"
+                                src={images.image}
+                                alt="Upload Image"
+                              />
+                              <span className="profile-default-font">
+                                + Upload Image
+                              </span>
+                            </div>
+                          </button>
+                          <input
+                            type="file"
+                            accept=".jpeg, .jpg, .png"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                            ref={fileInputRef}
+                          />
+                          <span className="profile-image-validation">
+                            Image must be below 1024x1024px. Use PNG or JPG
+                            format.
                           </span>
                         </div>
                       </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="link-save">
-              <span className="rectangle-dropdown-2"></span>
-              <div className="link-rectangle-format">
-                <div
-                  className="link-button-style"
-                  style={{
-                    backgroundColor: isReadyToPublish()
-                      ? 'var(--Purple, #633cff)'
-                      : 'transparent',
-                  }}>
-                  <button className="link-save-publish" onClick={handleSave}>
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          {isLinksBlockVisible === false && (
-            <div className="profile-area">
-              <div className="profile-block">
-                <div className="profile-header">
-                  <span className="profile-header-font">Profile Details</span>
-                  <span className="profile-subheader-font">
-                    Add your details to create a personal touch to your profile
-                  </span>
-                </div>
-                <div className="profile-upload-form">
-                  <div className="profile-upload-area">
-                    <div className="profile-upload">
-                      <span className="profile-upload-font">
-                        Profile picture
-                      </span>
-                      <div className="profile-image-area">
-                        <button
-                          className="profile-uploadimage"
-                          onClick={() => fileInputRef.current.click()}>
-                          <div className="profile-image">
-                            <img
-                              className="profile-default"
-                              src={images.image}
-                              alt="Upload Image"
-                            />
-                            <span className="profile-default-font">
-                              + Upload Image
-                            </span>
-                          </div>
-                        </button>
-                        <input
-                          type="file"
-                          accept=".jpeg, .jpg, .png"
-                          style={{ display: 'none' }}
-                          onChange={handleFileChange}
-                          ref={fileInputRef}
-                        />
-                        <span className="profile-image-validation">
-                          Image must be below 1024x1024px. Use PNG or JPG
-                          format.
-                        </span>
-                      </div>
+                  </div>
+
+                  <div className="profile-input-form">
+                    <div className="profile-first-name">
+                      <span className="profile-firstname">First name*</span>
+                      <input
+                        className="profile-first-name-input"
+                        placeholder="e.g. John"
+                        value={firstName}
+                        onChange={handleFirstNameChange}
+                      />
+                    </div>
+                    <div className="profile-last-name">
+                      <span className="profile-lastname">Last name*</span>
+                      <input
+                        className="profile-last-name-input"
+                        placeholder="e.g. Appleseed"
+                        value={lastName}
+                        onChange={handleLastNameChange}
+                      />
+                    </div>
+                    <div className="profile-email">
+                      <span className="profile-emails">Email</span>
+                      <input
+                        className="profile-email-input"
+                        placeholder="e.g. email@example.com"
+                        value={email}
+                        onChange={handleEmailChange}
+                      />
                     </div>
                   </div>
                 </div>
-
-                <div className="profile-input-form">
-                  <div className="profile-first-name">
-                    <span className="profile-firstname">First name*</span>
-                    <input
-                      className="profile-first-name-input"
-                      placeholder="e.g. John"
-                      value={firstName}
-                      onChange={handleFirstNameChange}
-                    />
-                  </div>
-                  <div className="profile-last-name">
-                    <span className="profile-lastname">Last name*</span>
-                    <input
-                      className="profile-last-name-input"
-                      placeholder="e.g. Appleseed"
-                      value={lastName}
-                      onChange={handleLastNameChange}
-                    />
-                  </div>
-                  <div className="profile-email">
-                    <span className="profile-emails">Email</span>
-                    <input
-                      className="profile-email-input"
-                      placeholder="e.g. email@example.com"
-                      value={email}
-                      onChange={handleEmailChange}
-                    />
+                <div className="profile-save">
+                  <span className="rectangle-dropdown-2"></span>
+                  <div className="profile-save-area">
+                    {isProfileSaveVisible && (
+                      <button
+                        className="profile-save-btn"
+                        onClick={handleProfileSave}>
+                        <span className="profile-save-font"> Save </span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
-              <div className="profile-save">
-                <span className="rectangle-dropdown-2"></span>
-                <div className="profile-save-area">
-                  {isProfileSaveVisible && (
-                    <button
-                      className="profile-save-btn"
-                      onClick={handleProfileSave}>
-                      <span className="profile-save-font"> Save </span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }

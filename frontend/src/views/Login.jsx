@@ -35,7 +35,6 @@ function LoginForm() {
           password: password,
         }
       )
-      console.log(response.data)
       if (response.data.token) {
         login(response.data.token, response.data.email_address) // Use the login function from the context
         navigate('/home')

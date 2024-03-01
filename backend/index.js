@@ -13,6 +13,7 @@ const profileRouter = require('./controllers/profiles')
 const signupRouter = require('./controllers/signup')
 const imageRouter = require('./controllers/images')
 const documentation = require('./controllers/documentation')
+
 app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json())
