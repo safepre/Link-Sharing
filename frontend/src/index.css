@@ -868,6 +868,16 @@ object {
   height: 16px;
 }
 
+.khanacademy-white {
+  margin-left: 40px;
+}
+
+.khanacademy-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
+}
+
 .selectedKhanAcademy-font {
   width: 604px;
   color: var(--Dark-Grey, #333);
@@ -882,9 +892,20 @@ object {
   align-items: center;
   gap: 12px;
 }
+
+.youtube-white {
+  margin-left: 8px;
+}
+
 .selectedYouTube {
   width: 16px;
   height: 16px;
+}
+
+.youtube-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
 }
 
 .selectedYouTube-font {
@@ -938,6 +959,16 @@ object {
   gap: 12px;
 }
 
+.facebook-white {
+  margin-left: 12px;
+}
+
+.facebook-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
+}
+
 .selectedFacebook {
   width: 16px;
   height: 16px;
@@ -962,6 +993,12 @@ object {
 .selectedFrontendMentor {
   width: 16px;
   height: 16px;
+}
+
+.frontendmentor-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 5px;
 }
 
 .selectedFrontendMentor-font {
@@ -995,6 +1032,16 @@ object {
   line-height: 150%;
 }
 
+.x-white {
+  margin-right: 30px;
+}
+
+.x-font {
+  color: var(--White, #fff);
+  padding-right: 65px;
+  margin-right: 30px;
+}
+
 .Twitch-platform {
   display: flex;
   align-items: center;
@@ -1016,6 +1063,12 @@ object {
   line-height: 150%;
 }
 
+.twitch-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
+}
+
 .Devto-platform {
   display: flex;
   align-items: center;
@@ -1025,6 +1078,16 @@ object {
 .selectedDevto {
   width: 16px;
   height: 16px;
+}
+
+.devto-white {
+  margin-right: 8px;
+}
+
+.devto-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
 }
 
 .selectedDevto-font {
@@ -1041,6 +1104,12 @@ object {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.codewars-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 50px;
 }
 
 .selectedCodewars {
@@ -1064,6 +1133,12 @@ object {
   gap: 12px;
 }
 
+.codepen-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 55px;
+}
+
 .selectedCodePen {
   width: 16px;
   height: 16px;
@@ -1083,6 +1158,15 @@ object {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.freecodecamp-font {
+  color: var(--White, #fff);
+  margin-right: 35px;
+}
+
+.freecodecamp-white {
+  margin-right: 15px;
 }
 
 .selectedfreeCodeCamp {
@@ -1136,6 +1220,12 @@ object {
   gap: 12px;
 }
 
+.gitlab-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
+}
+
 .selectedGitLab {
   width: 16px;
   height: 16px;
@@ -1162,6 +1252,12 @@ object {
   height: 16px;
 }
 
+.stackoverflow-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 25px;
+}
+
 .selectedStackOverflow-font {
   width: 604px;
   color: var(--Dark-Grey, #333);
@@ -1177,10 +1273,12 @@ object {
   align-items: center;
   gap: 12px;
 }
+
 .selectedHashnode {
   width: 16px;
   height: 16px;
 }
+
 .selectedHashnode-font {
   width: 604px;
   color: var(--Dark-Grey, #333);
@@ -1190,6 +1288,13 @@ object {
   font-weight: 400;
   line-height: 150%;
 }
+
+.hashnode-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 50px;
+}
+
 .Replit-platform {
   display: flex;
   align-items: center;
@@ -1199,6 +1304,16 @@ object {
 .selectedReplit {
   width: 16px;
   height: 16px;
+}
+
+.replit-white {
+  margin-right: 10px;
+}
+
+.replit-font {
+  color: var(--White, #fff);
+  margin: 15px;
+  padding-right: 65px;
 }
 
 .selectedReplit-font {

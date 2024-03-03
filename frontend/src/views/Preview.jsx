@@ -15,21 +15,21 @@ import defaultPic from '../assets/images/default.jpg'
 import axios from 'axios'
 import githubIcon from '../assets/images/white-github.svg'
 import youtubeIcon from '../assets/images/white-youtube.svg'
-import twitchIcon from '../assets/images/icon-twitch.svg'
-import stackoverflowIcon from '../assets/images/icon-stack-overflow.svg'
+import twitchIcon from '../assets/images/white-twitch.svg'
+import stackoverflowIcon from '../assets/images/white-stackoverflow.svg'
 import linkedinIcon from '../assets/images/white-linkedin.svg'
-import gitlabIcon from '../assets/images/icon-gitlab.svg'
-import devtoIcon from '../assets/images/icon-devto.svg'
-import freecodecampIcon from '../assets/images/icon-freecodecamp.svg'
-import frontendmentorIcon from '../assets/images/icon-frontend-mentor.svg'
-import hashnodeIcon from '../assets/images/icon-hashnode.svg'
-import codepenIcon from '../assets/images/icon-codepen.svg'
-import codewarsIcon from '../assets/images/icon-codewars.svg'
-import khanacademyIcon from '../assets/images/khan-academy-icon-svgrepo-com.svg'
+import gitlabIcon from '../assets/images/white-gitlab.svg'
+import devtoIcon from '../assets/images/white-devto.svg'
+import freecodecampIcon from '../assets/images/white-freecodecamp.svg'
+import frontendmentorIcon from '../assets/images/white-frontendmaster.svg'
+import hashnodeIcon from '../assets/images/white-hashnode.svg'
+import codepenIcon from '../assets/images/white-codepen.svg'
+import codewarsIcon from '../assets/images/white-codewars.svg'
+import khanacademyIcon from '../assets/images/White-KhanAcademy.svg'
 import leetcodeIcon from '../assets/images/White-LeetCode.svg'
-import xIcon from '../assets/images/X_logo_2023_original.svg'
-import replitIcon from '../assets/images/New_Replit_Logo.svg'
-import facebookIcon from '../assets/images/icon-facebook.svg'
+import xIcon from '../assets/images/White-X.svg'
+import replitIcon from '../assets/images/White-Replit.svg'
+import facebookIcon from '../assets/images/white-facebook.svg'
 import arrowIcon from '../assets/images/arrow.svg'
 import { useAuth } from '../services/authContext'
 
@@ -73,19 +73,13 @@ const Preview = () => {
           setFirstName(first_name)
           setLastName(last_name)
           setEmail(email)
-
-          setProfilePictureUrl(userProfile.image.image_data)
-          // Set links data
-
+          if (userProfile.image) {
+            setProfilePictureUrl(userProfile.image.image_data)
+          }
           const userLinks = userProfile.links || []
-
-          // ... (rest of the code for setting links, firstName, lastName, etc.)
-
           const platforms = userLinks.map(link => link.platform)
-
           // Set the platforms in state
           setPlatforms(platforms)
-
           setLinks(userLinks)
 
           // Automatically open links section and populate it
@@ -98,8 +92,6 @@ const Preview = () => {
               date: link.date,
               isLastLink: index === userLinks.length - 1,
             }
-
-            console.log('Mapped Link:', mappedLink)
             return mappedLink
           })
 
@@ -152,7 +144,7 @@ const Preview = () => {
       switch (link.platform) {
         case 'GitHub':
           platformIcon = githubIcon
-          platformColor = 'bg-black'
+          platformColor = 'bg-GitHub'
           break
         case 'YouTube':
           platformIcon = youtubeIcon
@@ -160,11 +152,63 @@ const Preview = () => {
           break
         case 'LinkedIn':
           platformIcon = linkedinIcon
-          platformColor = 'bg-blue-700'
+          platformColor = 'bg-LinkedIn'
           break
         case 'LeetCode':
           platformIcon = leetcodeIcon
-          platformColor = 'bg-yellow-400'
+          platformColor = 'bg-LeetCode'
+          break
+        case 'Facebook':
+          platformIcon = facebookIcon
+          platformColor = 'bg-Facebook-400'
+          break
+        case 'GitLab':
+          platformIcon = gitlabIcon
+          platformColor = 'bg-GitLab-400'
+          break
+        case 'StackOverflow':
+          platformIcon = stackoverflowIcon
+          platformColor = 'bg-StackOverflow-400'
+          break
+        case 'Twitch':
+          platformIcon = twitchIcon
+          platformColor = 'bg-Twitch-400'
+          break
+        case 'Devto':
+          platformIcon = devtoIcon
+          platformColor = 'bg-Devto-400'
+          break
+        case 'Replit':
+          platformIcon = replitIcon
+          platformColor = 'bg-Replit-400'
+          break
+        case 'X':
+          platformIcon = xIcon
+          platformColor = 'bg-X-400'
+          break
+        case 'freeCodeCamp':
+          platformIcon = freecodecampIcon
+          platformColor = 'bg-freeCodeCamp-400'
+          break
+        case 'KhanAcademy':
+          platformIcon = khanacademyIcon
+          platformColor = 'bg-KhanAcademy-400'
+          break
+        case 'FrontendMentor':
+          platformIcon = frontendmentorIcon
+          platformColor = 'bg-FrontendMentor-400'
+          break
+        case 'Hashnode':
+          platformIcon = frontendmentorIcon
+          platformColor = 'bg-Hashnode-400'
+          break
+        case 'Codewars':
+          platformIcon = codewarsIcon
+          platformColor = 'bg-Codewars-400'
+          break
+        case 'CodePen':
+          platformIcon = codepenIcon
+          platformColor = 'bg-CodePen-400'
           break
         // Add cases for other platforms here
         default:
@@ -223,9 +267,11 @@ const Preview = () => {
                     alt="Profile"
                   />
                 ) : (
-                  <div className="default-profile-image">
-                    <img className="" src={defaultPic} alt="Default" />
-                  </div>
+                  <img
+                    className="max-w-full max-h-full w-44 h-40 rounded-[6.5rem]"
+                    src={defaultPic}
+                    alt="Default"
+                  />
                 )}
               </div>
               {/* user's name */}

@@ -18,21 +18,21 @@ import defaultPic from '../assets/images/default.jpg'
 import axios from 'axios'
 import githubIcon from '../assets/images/white-github.svg'
 import youtubeIcon from '../assets/images/white-youtube.svg'
-import twitchIcon from '../assets/images/icon-twitch.svg'
-import stackoverflowIcon from '../assets/images/icon-stack-overflow.svg'
+import twitchIcon from '../assets/images/white-twitch.svg'
+import stackoverflowIcon from '../assets/images/white-stackoverflow.svg'
 import linkedinIcon from '../assets/images/white-linkedin.svg'
-import gitlabIcon from '../assets/images/icon-gitlab.svg'
-import devtoIcon from '../assets/images/icon-devto.svg'
-import freecodecampIcon from '../assets/images/icon-freecodecamp.svg'
-import frontendmentorIcon from '../assets/images/icon-frontend-mentor.svg'
-import hashnodeIcon from '../assets/images/icon-hashnode.svg'
-import codepenIcon from '../assets/images/icon-codepen.svg'
-import codewarsIcon from '../assets/images/icon-codewars.svg'
-import khanacademyIcon from '../assets/images/khan-academy-icon-svgrepo-com.svg'
+import gitlabIcon from '../assets/images/white-gitlab.svg'
+import devtoIcon from '../assets/images/white-devto.svg'
+import freecodecampIcon from '../assets/images/white-freecodecamp.svg'
+import frontendmentorIcon from '../assets/images/white-frontendmaster.svg'
+import hashnodeIcon from '../assets/images/white-hashnode.svg'
+import codepenIcon from '../assets/images/white-codepen.svg'
+import codewarsIcon from '../assets/images/white-codewars.svg'
+import khanacademyIcon from '../assets/images/White-KhanAcademy.svg'
 import leetcodeIcon from '../assets/images/White-LeetCode.svg'
-import xIcon from '../assets/images/X_logo_2023_original.svg'
-import replitIcon from '../assets/images/New_Replit_Logo.svg'
-import facebookIcon from '../assets/images/icon-facebook.svg'
+import xIcon from '../assets/images/White-X.svg'
+import replitIcon from '../assets/images/White-Replit.svg'
+import facebookIcon from '../assets/images/white-facebook.svg'
 import { useAuth } from '../services/authContext'
 
 const Home = () => {
@@ -107,9 +107,9 @@ const Home = () => {
           setLastName(last_name)
           setEmail(email)
 
-          setProfilePictureUrl(userProfile.image.image_data)
-          // Set links data
-
+          if (userProfile.image) {
+            setProfilePictureUrl(userProfile.image.image_data)
+          }
           const userLinks = userProfile.links || []
 
           // ... (rest of the code for setting links, firstName, lastName, etc.)
@@ -276,7 +276,19 @@ const Home = () => {
       YouTube: '#FF0000',
       LinkedIn: '#0077B5',
       LeetCode: '#FFBF00',
-      // ... (other platforms and colors)
+      Facebook: '#2D68FF',
+      Twitch: '#6441a5',
+      Devto: '#333333',
+      Replit: '#EB4925',
+      X: '#666666',
+      freeCodeCamp: '#302267',
+      KhanAcademy: '#AFE1AF',
+      StackOverflow: '#EC7100',
+      FrontendMentor: '#D7D7D7',
+      Hashnode: '#0330D1',
+      Codewars: '#8A1A50',
+      CodePen: '#222222',
+      GitLab: '#EB4925',
     }
 
     const color = colorMappings[platform] || ''
