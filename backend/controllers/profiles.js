@@ -5,7 +5,6 @@ const { tokenExtractor, userExtractor } = require('../util/middleware')
 router.get('/', async (req, res) => {
   try {
     const profiles = await Profile.findAll({
-      attributes: { exclude: ['userId'] },
       include: [
         {
           model: User,
@@ -29,8 +28,8 @@ router.get('/', async (req, res) => {
 
 const profileFinder = async (req, res, next) => {
   try {
-    req.profile = await Profile.findByPk(req.params.id, {
-      attributes: { exclude: ['userId'] },
+    req.profile = await Profile.findOne({
+      where: { id: req.params.userId },
       include: [
         {
           model: User,
@@ -52,7 +51,7 @@ const profileFinder = async (req, res, next) => {
   }
 }
 
-router.get('/:id', profileFinder, async (req, res) => {
+router.get('/:userId', profileFinder, async (req, res) => {
   if (req.profile) {
     res.json(req.profile)
   } else {
