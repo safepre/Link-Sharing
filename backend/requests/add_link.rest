@@ -1,8 +1,0 @@
-POST http://localhost:3001/api/links
-Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRvZURvZURvZTEiLCJpZCI6MSwiaWF0IjoxNjk3MjY0MjUxfQ.N864_gQ1LTgDmNAqgo0xi7jmg6_pq8ZVIQUqhOZ15B0
-
-{
-  "url": "http://facebook.com",
-  "userId": "1"
-}
