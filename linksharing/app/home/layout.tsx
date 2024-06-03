@@ -3,17 +3,20 @@ import { NavbarComponent } from '@/components/NavBar'
 const HomeLayout = ({ children }) => {
   return (
     <>
-      <NavbarComponent />
-
-      <div className="mt-6 flex justify-center gap-6 px-6 ">
-        <div className="bg-red-100 w-[1000px] h-[600px]"></div>
-        <div className="relative bg-yellow-100 w-full h-[600px]">
-          <div className="border-t absolute bg-blue-100 inset-x-0 bottom-0">
-            e
+      <div className="bg-zinc-50">
+        <div className="p-2 px-6">
+          <NavbarComponent />
+        </div>
+        <div className="mt-3 flex justify-center gap-6 px-6 ">
+          <div className="bg-white w-[1000px] h-[725px]"></div>
+          <div className="relative bg-white w-full h-[725px]">
+            <div className="border-t absolute bg-white inset-x-0 bottom-0 h-16">
+              ello
+            </div>
           </div>
         </div>
       </div>
-      {children}
+      <div className="bg-green-100">{children}</div>
     </>
   )
 }

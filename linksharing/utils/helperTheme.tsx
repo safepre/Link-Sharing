@@ -53,7 +53,7 @@ export const customThemeInput: CustomFlowbiteTheme['textInput'] = {
 
 export const customThemeNavbar: CustomFlowbiteTheme['navbar'] = {
   root: {
-    base: 'bg-white-100 px-2 py-2.5 dark:border-gray-700 dark:bg-gray-800 sm:px-10 border-b',
+    base: 'bg-white px-3 py-2.5 dark:border-gray-700 dark:bg-gray-800 sm:px-10 border-b',
     rounded: {
       on: 'rounded',
       off: '',
