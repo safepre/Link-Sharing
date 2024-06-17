@@ -41,7 +41,9 @@ function LoginForm() {
           required
         />
       </div>
-      <Button type="submit">Login</Button>
+      <Button color="purple" type="submit">
+        Login
+      </Button>
     </form>
   )
 }

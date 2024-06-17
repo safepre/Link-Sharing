@@ -72,7 +72,9 @@ function RegisterForm() {
           <p className="text-red-600">{formState.message}</p>
         )}
       </div>
-      <Button type="submit">Create new account</Button>
+      <Button color="purple" type="submit">
+        Create new account
+      </Button>
     </form>
   )
 }

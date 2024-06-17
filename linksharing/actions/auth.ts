@@ -30,7 +30,6 @@ export const registerUser = async (prevState: any, formData: FormData) => {
     const { token } = await signup(result.data)
     cookies().set(COOKIE_NAME, token)
   } catch (error) {
-    console.error(error)
     return { message: 'Failed to sign you up' }
   }
 
