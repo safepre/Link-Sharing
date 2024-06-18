@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { Navbar } from 'flowbite-react'
-import { customThemeNavbar } from '../utils/helperTheme'
+import { Navbar, Button } from 'flowbite-react'
+import { customThemeButton, customThemeNavbar } from '../utils/helperTheme'
 export function NavbarComponent() {
   return (
     <Navbar theme={customThemeNavbar} fluid rounded>
@@ -13,11 +13,13 @@ export function NavbarComponent() {
           alt="Devlink Logo"
         />
       </Navbar.Brand>
-      <Navbar.Toggle />
+      <Button theme={customThemeButton} color="white">
+        <span>Links</span>
+      </Button>
+      <Button theme={customThemeButton} color="white">
+        <span> Profile Details</span>
+      </Button>
       <Navbar.Collapse>
-        <Navbar.Link href="#" active>
-          Home
-        </Navbar.Link>
         <Navbar.Link as={Link} href="#">
           About
         </Navbar.Link>

@@ -1,5 +1,19 @@
 import { CustomFlowbiteTheme } from 'flowbite-react'
 
+export const customThemeLabel: CustomFlowbiteTheme['label'] = {
+  root: {
+    base: 'text-sm font-medium',
+    disabled: 'opacity-50',
+    colors: {
+      default: 'text-gray-900 dark:text-white',
+      info: 'text-cyan-500 dark:text-cyan-600',
+      failure: 'text-red-700 dark:text-red-500',
+      warning: 'text-yellow-500 dark:text-yellow-600',
+      success: 'text-green-700 dark:text-green-500',
+    },
+  },
+}
+
 export const customThemeInput: CustomFlowbiteTheme['textInput'] = {
   base: 'flex',
   addon:
@@ -86,7 +100,7 @@ export const customThemeNavbar: CustomFlowbiteTheme['navbar'] = {
     base: 'block py-2 pl-3 pr-4 md:p-0',
     active: {
       on: 'bg-cyan-700 text-white dark:text-white md:bg-transparent md:text-cyan-700',
-      off: 'border-b border-gray-100  text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white',
+      off: 'border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white',
     },
     disabled: {
       on: 'text-gray-400 hover:cursor-not-allowed dark:text-gray-600',
@@ -103,6 +117,7 @@ export const customThemeButton: CustomFlowbiteTheme['button'] = {
   base: 'group relative flex items-stretch justify-center p-0.5 text-center font-medium transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none',
   fullSized: 'w-full',
   color: {
+    white: 'bg-white hover:bg-purple-200 hover:text-purple-600',
     dark: 'border border-transparent bg-gray-800 text-white focus:ring-4 focus:ring-gray-300 enabled:hover:bg-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:focus:ring-gray-800 dark:enabled:hover:bg-gray-700',
     failure:
       'border border-transparent bg-red-700 text-white focus:ring-4 focus:ring-red-300 enabled:hover:bg-red-800 dark:bg-red-600 dark:focus:ring-red-900 dark:enabled:hover:bg-red-700',
@@ -141,35 +156,6 @@ export const customThemeButton: CustomFlowbiteTheme['button'] = {
     lg: 'left-5',
     xl: 'left-6',
   },
-  gradient: {
-    cyan: 'bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-gradient-to-br dark:focus:ring-cyan-800',
-    failure:
-      'bg-gradient-to-r from-red-400 via-red-500 to-red-600 text-white focus:ring-4 focus:ring-red-300 enabled:hover:bg-gradient-to-br dark:focus:ring-red-800',
-    info: 'bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-gradient-to-br dark:focus:ring-cyan-800 ',
-    lime: 'bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 text-gray-900 focus:ring-4 focus:ring-lime-300 enabled:hover:bg-gradient-to-br dark:focus:ring-lime-800',
-    pink: 'bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 text-white focus:ring-4 focus:ring-pink-300 enabled:hover:bg-gradient-to-br dark:focus:ring-pink-800',
-    purple:
-      'bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 text-white focus:ring-4 focus:ring-purple-300 enabled:hover:bg-gradient-to-br dark:focus:ring-purple-800',
-    success:
-      'bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white focus:ring-4 focus:ring-green-300 enabled:hover:bg-gradient-to-br dark:focus:ring-green-800',
-    teal: 'bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white focus:ring-4 focus:ring-teal-300 enabled:hover:bg-gradient-to-br dark:focus:ring-teal-800',
-  },
-  gradientDuoTone: {
-    cyanToBlue:
-      'bg-gradient-to-r from-cyan-500 to-cyan-500 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-gradient-to-bl dark:focus:ring-cyan-800',
-    greenToBlue:
-      'bg-gradient-to-br from-green-400 to-cyan-600 text-white focus:ring-4 focus:ring-green-200 enabled:hover:bg-gradient-to-bl dark:focus:ring-green-800',
-    pinkToOrange:
-      'bg-gradient-to-br from-pink-500 to-orange-400 text-white focus:ring-4 focus:ring-pink-200 enabled:hover:bg-gradient-to-bl dark:focus:ring-pink-800',
-    purpleToBlue:
-      'bg-gradient-to-br from-purple-600 to-cyan-500 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-gradient-to-bl dark:focus:ring-cyan-800',
-    purpleToPink:
-      'bg-gradient-to-r from-purple-500 to-pink-500 text-white focus:ring-4 focus:ring-purple-200 enabled:hover:bg-gradient-to-l dark:focus:ring-purple-800',
-    redToYellow:
-      'bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 text-gray-900 focus:ring-4 focus:ring-red-100 enabled:hover:bg-gradient-to-bl dark:focus:ring-red-400',
-    tealToLime:
-      'bg-gradient-to-r from-teal-200 to-lime-200 text-gray-900 focus:ring-4 focus:ring-lime-200 enabled:hover:bg-gradient-to-l enabled:hover:from-teal-200 enabled:hover:to-lime-200 enabled:hover:text-gray-900 dark:focus:ring-teal-700',
-  },
   inner: {
     base: 'flex items-stretch transition-all duration-200',
     position: {
@@ -188,7 +174,7 @@ export const customThemeButton: CustomFlowbiteTheme['button'] = {
     },
   },
   label:
-    'ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-cyan-200 text-xs font-semibold text-cyan-800',
+    'inline-flex h-4 w-full items-center justify-center rounded-full text-gray-500 hover:text-cyan-700',
   outline: {
     color: {
       gray: 'border border-gray-900 dark:border-white',
