@@ -3,7 +3,18 @@
 import Link from 'next/link'
 import { Navbar, Button } from 'flowbite-react'
 import { customThemeButton, customThemeNavbar } from '../utils/helperTheme'
-export function NavbarComponent() {
+import { useState } from 'react'
+export function NavbarComponent({ selectedButton, setSelectedButton }) {
+  function eventProfileHandler() {
+    setSelectedButton('profile')
+  }
+
+  function eventHandler() {
+    setSelectedButton('links')
+  }
+
+  const activeClass = 'bg-purple-200 text-purple-600'
+
   return (
     <Navbar theme={customThemeNavbar} fluid rounded>
       <Navbar.Brand as={Link} href="https://flowbite-react.com">
@@ -13,10 +24,18 @@ export function NavbarComponent() {
           alt="Devlink Logo"
         />
       </Navbar.Brand>
-      <Button theme={customThemeButton} color="white">
+      <Button
+        theme={customThemeButton}
+        onClick={eventProfileHandler}
+        color="white"
+        className={selectedButton === 'profile' ? activeClass : ''}>
         <span>Links</span>
       </Button>
-      <Button theme={customThemeButton} color="white">
+      <Button
+        theme={customThemeButton}
+        onClick={eventHandler}
+        color="white"
+        className={selectedButton === 'links' ? activeClass : ''}>
         <span> Profile Details</span>
       </Button>
       <Navbar.Collapse>
