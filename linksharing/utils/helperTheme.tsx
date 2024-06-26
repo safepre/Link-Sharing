@@ -15,7 +15,7 @@ export const customThemeLabel: CustomFlowbiteTheme['label'] = {
 }
 
 export const customThemeInput: CustomFlowbiteTheme['textInput'] = {
-  base: 'flex',
+  base: 'flex items-center',
   addon:
     'inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400',
   field: {

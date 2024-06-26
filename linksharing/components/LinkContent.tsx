@@ -2,20 +2,42 @@
 
 import { Dropdown, Label, TextInput } from 'flowbite-react'
 import { customThemeDropdown, customThemeInput } from '../utils/helperTheme'
-function LinkContent() {
+import { useState } from 'react'
+function LinkContent({ remove, selectedPlatform, setSelectedPlatform }) {
+  const listPlatforms = {
+    platforms: {
+      GitHub: null,
+      X: null,
+      Youtube: null,
+      Linkedin: null,
+    },
+  }
   return (
     <>
-      <div className="rounded-md bg-gray-100 p-5">
-        <span className="font-semibold text-l">Link</span>
-        <button className="text-gray-500 ml-96">Remove</button>
+      <div className="rounded-md bg-gray-100 p-5 mt-5">
+        <div className="flex justify-between">
+          <span className="font-semibold text-l">Link</span>
+          <button onClick={remove} className="text-gray-500">
+            Remove
+          </button>
+        </div>
         <div className="mb-2 block">
           <Label htmlFor="url" value="Platform" />
         </div>
-
-        <Dropdown theme={customThemeDropdown} label="Dropdown button" inline>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Separated link</Dropdown.Item>
+        <Dropdown
+          theme={customThemeDropdown}
+          label={selectedPlatform ? selectedPlatform : ``}
+          inline>
+          {Object.keys(listPlatforms.platforms).map((key, index) => (
+            <Dropdown.Item
+              key={index}
+              onClick={() =>
+                setSelectedPlatform(Object.keys(listPlatforms.platforms)[index])
+              }>
+              {Object.keys(listPlatforms.platforms)[index]}
+              <Dropdown.Divider />
+            </Dropdown.Item>
+          ))}
         </Dropdown>
         <div className="mb-2 block mt-2">
           <Label htmlFor="url" value="Link" />

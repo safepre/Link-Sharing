@@ -3,13 +3,14 @@
 import { NavbarComponent } from '@/components/NavBar'
 import CreateButton from '../../components/CreateButton'
 import LinkContent from '../../components/LinkContent'
+import Display from '../../components/Display'
 import { useState } from 'react'
 import { customThemeInput } from '../../utils/helperTheme'
 import { Button, TextInput } from 'flowbite-react'
 
 const HomeLayout = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState('profile')
-
+  const [selectedPlatform, setSelectedPlatform] = useState([])
   return (
     <>
       <div className="bg-zinc-50">
@@ -19,9 +20,10 @@ const HomeLayout = ({ children }) => {
             setSelectedButton={setSelectedButton}
           />
         </div>
-
         <div className="mt-3 flex justify-center gap-6 px-6 ">
-          <div className="bg-white w-[1000px] h-[725px]">s</div>
+          <div className="flex justify-center items-center bg-white w-[1000px] h-[725px]">
+            <Display selectedPlatform={selectedPlatform} />
+          </div>
           {selectedButton === 'profile' ? (
             <div className="overflow-auto relative bg-white w-full h-[725px]">
               <div className="m-10">
@@ -35,10 +37,13 @@ const HomeLayout = ({ children }) => {
                   </span>
                 </div>
                 <CreateButton />
-                <LinkContent remove={undefined} />
+                <LinkContent
+                  selectedPlatform={selectedPlatform}
+                  setSelectedPlatform={setSelectedPlatform}
+                  remove={undefined}
+                />
               </div>
               <div className="border-t absolute bg-white inset-x-0 bottom-0 h-16">
-                {' '}
                 <div className="flex justify-end items-center h-full mr-7">
                   <Button theme={customThemeInput} color="purple">
                     Save
@@ -56,12 +61,12 @@ const HomeLayout = ({ children }) => {
                   </span>
                   <div className="flex flex-col mt-7 justify-center items-center">
                     <div className="flex flex-col gap-4">
-                      <div className="bg-zinc-100 rounded-md p-4">
+                      <div className="bg-zinc-100 rounded-lg p-4">
                         <div className="grid grid-cols-3 items-center">
                           <span className="text-slate-500">
                             Profile picture
                           </span>
-                          <button className="bg-purple-200 w-[194px] h-[193px] rounded flex justify-center items-center text-purple-700 font-medium">
+                          <button className="bg-purple-200 w-[194px] h-[193px] rounded-lg flex justify-center items-center text-purple-700 font-medium">
                             <span>+ Upload Image</span>
                           </button>
                           <span className="text-slate-500 text-sm">
@@ -71,10 +76,13 @@ const HomeLayout = ({ children }) => {
                         </div>
                       </div>
 
-                      <div className="bg-zinc-100 rounded-md w-[739px] h-[200px] bg-gray-300">
+                      <div className="bg-zinc-100 rounded-lg w-[739px] h-[200px] bg-gray-300">
                         {' '}
                         <div className="flex flex-row justify-between mt-3.5">
-                          <span className="m-4"> First name*</span>
+                          <span className="m-4 text-slate-500">
+                            {' '}
+                            First name*
+                          </span>
                           <TextInput
                             className="m-2 w-[432px] mr-5"
                             theme={customThemeInput}
@@ -86,7 +94,7 @@ const HomeLayout = ({ children }) => {
                           />
                         </div>
                         <div className="flex flex-row justify-between">
-                          <span className="m-4"> Last name*</span>
+                          <span className="m-4 text-slate-500">Last name*</span>
                           <TextInput
                             className="m-2 w-[432px] mr-5"
                             theme={customThemeInput}
@@ -98,7 +106,7 @@ const HomeLayout = ({ children }) => {
                           />
                         </div>
                         <div className="flex flex-row justify-between">
-                          <span className="m-4"> Email</span>
+                          <span className="m-4 text-slate-500"> Email</span>
                           <TextInput
                             className="m-2 w-[432px] mr-5"
                             theme={customThemeInput}
@@ -131,4 +139,3 @@ const HomeLayout = ({ children }) => {
 }
 
 export default HomeLayout
-1
