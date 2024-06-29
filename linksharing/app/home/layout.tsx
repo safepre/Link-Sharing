@@ -1,15 +1,16 @@
 'use client'
-
 import { NavbarComponent } from '@/components/NavBar'
 import CreateButton from '../../components/CreateButton'
 import LinkContent from '../../components/LinkContent'
 import Display from '../../components/Display'
 import { useState } from 'react'
 import { customThemeInput } from '../../utils/helperTheme'
-import { Button, TextInput } from 'flowbite-react'
+import { Button } from 'flowbite-react'
+import InputForms from '../../components/InputForms'
 
 const HomeLayout = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState('profile')
+  const [user, setUser] = useState({ firstName: '', lastName: '', email: '' })
   const [selectedPlatform, setSelectedPlatform] = useState([])
   return (
     <>
@@ -21,11 +22,11 @@ const HomeLayout = ({ children }) => {
           />
         </div>
         <div className="mt-3 flex justify-center gap-6 px-6 ">
-          <div className="flex justify-center items-center bg-white w-[1000px] h-[725px]">
-            <Display selectedPlatform={selectedPlatform} />
+          <div className="flex justify-center items-center bg-white w-[1000px] h-[725px] rounded-md">
+            <Display user={user} selectedPlatform={selectedPlatform} />
           </div>
           {selectedButton === 'profile' ? (
-            <div className="overflow-auto relative bg-white w-full h-[725px]">
+            <div className="overflow-auto relative bg-white w-full h-[725px] rounded-t-md">
               <div className="m-10">
                 <span className="font-semibold text-3xl">
                   Customize your links
@@ -43,8 +44,8 @@ const HomeLayout = ({ children }) => {
                   remove={undefined}
                 />
               </div>
-              <div className="border-t absolute bg-white inset-x-0 bottom-0 h-16">
-                <div className="flex justify-end items-center h-full mr-7">
+              <div className="border-t absolute inset-x-0 bottom-0 h-16 ">
+                <div className="flex justify-end items-center h-full mr-7 ">
                   <Button theme={customThemeInput} color="purple">
                     Save
                   </Button>
@@ -53,7 +54,7 @@ const HomeLayout = ({ children }) => {
             </div>
           ) : (
             <div className="relative bg-white w-full h-[725px]">
-              <div className="m-10">
+              <div className="m-10 ">
                 <span className="font-semibold text-3xl">Profile Details</span>
                 <div className="mt-1 mb-2">
                   <span className="text-sm text-slate-500">
@@ -75,49 +76,7 @@ const HomeLayout = ({ children }) => {
                           </span>
                         </div>
                       </div>
-
-                      <div className="bg-zinc-100 rounded-lg w-[739px] h-[200px] bg-gray-300">
-                        {' '}
-                        <div className="flex flex-row justify-between mt-3.5">
-                          <span className="m-4 text-slate-500">
-                            {' '}
-                            First name*
-                          </span>
-                          <TextInput
-                            className="m-2 w-[432px] mr-5"
-                            theme={customThemeInput}
-                            color="white"
-                            id="url"
-                            type="url"
-                            placeholder="e.g. John"
-                            required
-                          />
-                        </div>
-                        <div className="flex flex-row justify-between">
-                          <span className="m-4 text-slate-500">Last name*</span>
-                          <TextInput
-                            className="m-2 w-[432px] mr-5"
-                            theme={customThemeInput}
-                            color="white"
-                            id="url"
-                            type="url"
-                            placeholder="e.g. John"
-                            required
-                          />
-                        </div>
-                        <div className="flex flex-row justify-between">
-                          <span className="m-4 text-slate-500"> Email</span>
-                          <TextInput
-                            className="m-2 w-[432px] mr-5"
-                            theme={customThemeInput}
-                            color="white"
-                            id="url"
-                            type="url"
-                            placeholder="e.g. John"
-                            required
-                          />
-                        </div>
-                      </div>
+                      <InputForms user={user} setUser={setUser} />
                     </div>
                   </div>
                 </div>
@@ -137,5 +96,4 @@ const HomeLayout = ({ children }) => {
     </>
   )
 }
-
 export default HomeLayout
