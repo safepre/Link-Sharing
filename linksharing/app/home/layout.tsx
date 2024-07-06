@@ -1,17 +1,34 @@
 'use client'
 import { NavbarComponent } from '@/components/NavBar'
+import { platforms } from '@/utils/platforms'
 import CreateButton from '../../components/CreateButton'
-import LinkContent from '../../components/LinkContent'
 import Display from '../../components/Display'
 import { useState } from 'react'
 import { customThemeInput } from '../../utils/helperTheme'
 import { Button } from 'flowbite-react'
 import InputForms from '../../components/InputForms'
+import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 const HomeLayout = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState('profile')
   const [user, setUser] = useState({ firstName: '', lastName: '', email: '' })
-  const [selectedPlatform, setSelectedPlatform] = useState([])
+  const [LinkItems, setLinkItems] = useState([])
+
+  const addLinkItem = () => {
+    setLinkItems(prevItems => [...prevItems, { id: uuidv4(), platform: null }])
+  }
+  const updateLinkItem = (id, updatedData) => {
+    setLinkItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, ...updatedData } : item
+      )
+    )
+  }
+  const removeLinkItem = id => {
+    setLinkItems(prevItems => prevItems.filter(item => item.id !== id))
+  }
+
   return (
     <>
       <div className="bg-zinc-50">
@@ -23,7 +40,7 @@ const HomeLayout = ({ children }) => {
         </div>
         <div className="mt-3 flex justify-center gap-6 px-6 ">
           <div className="flex justify-center items-center bg-white w-[1000px] h-[725px] rounded-md">
-            <Display user={user} selectedPlatform={selectedPlatform} />
+            <Display user={user} LinkItems={LinkItems} platforms={platforms} />{' '}
           </div>
           {selectedButton === 'profile' ? (
             <div className="overflow-auto relative bg-white w-full h-[725px] rounded-t-md">
@@ -37,11 +54,12 @@ const HomeLayout = ({ children }) => {
                     with the world!
                   </span>
                 </div>
-                <CreateButton />
-                <LinkContent
-                  selectedPlatform={selectedPlatform}
-                  setSelectedPlatform={setSelectedPlatform}
-                  remove={undefined}
+                <CreateButton
+                  LinkItem={LinkItems}
+                  addLinkItem={addLinkItem}
+                  removeItem={removeLinkItem}
+                  updateLinkItem={updateLinkItem}
+                  platforms={platforms}
                 />
               </div>
               <div className="border-t absolute inset-x-0 bottom-0 h-16 ">

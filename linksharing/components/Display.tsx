@@ -1,15 +1,6 @@
 import React from 'react'
 
-const Display = ({ selectedPlatform, user }) => {
-  const listPlatforms = {
-    platforms: {
-      GitHub: 'bg-black',
-      X: 'bg-black',
-      Youtube: 'bg-red-500',
-      Linkedin: 'bg-blue-500',
-    },
-  }
-
+const Display = ({ LinkItems, user, platforms }) => {
   return (
     <div className="flex flex-col items-center space-y-4 ">
       {/* Profile Picture Placeholder */}
@@ -28,10 +19,15 @@ const Display = ({ selectedPlatform, user }) => {
       </div>
 
       {/* Platform Button */}
-      <div
-        className={`flex justify-center items-center w-[220px] h-[40px] font-medium text-sm text-white ${listPlatforms.platforms[selectedPlatform]} rounded-md`}>
-        {selectedPlatform}
-      </div>
+      {LinkItems.map(item => (
+        <div
+          key={item.id}
+          className={`flex justify-center items-center w-[220px] h-[40px] font-medium text-sm text-white ${
+            platforms[item.platform]?.bgColor || 'bg-gray-300'
+          } rounded-md`}>
+          {item.platform}
+        </div>
+      ))}
     </div>
   )
 }

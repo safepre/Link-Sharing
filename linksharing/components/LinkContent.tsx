@@ -2,15 +2,14 @@
 
 import { Dropdown, Label, TextInput } from 'flowbite-react'
 import { customThemeDropdown, customThemeInput } from '../utils/helperTheme'
-import { useState } from 'react'
-function LinkContent({ remove, selectedPlatform, setSelectedPlatform }) {
-  const listPlatforms = {
-    platforms: {
-      GitHub: null,
-      X: null,
-      Youtube: null,
-      Linkedin: null,
-    },
+
+function LinkContent({ item, remove, updateItem, platforms }) {
+  const handlePlatformChange = platform => {
+    updateItem(item.id, { platform })
+  }
+
+  const handleUrlChange = e => {
+    updateItem(item.id, { url: e.target.value })
   }
   return (
     <>
@@ -26,15 +25,13 @@ function LinkContent({ remove, selectedPlatform, setSelectedPlatform }) {
         </div>
         <Dropdown
           theme={customThemeDropdown}
-          label={selectedPlatform ? selectedPlatform : ``}
+          label={item.platform || 'Select a platform'}
           inline>
-          {Object.keys(listPlatforms.platforms).map((key, index) => (
+          {Object.keys(platforms).map(platform => (
             <Dropdown.Item
-              key={index}
-              onClick={() =>
-                setSelectedPlatform(Object.keys(listPlatforms.platforms)[index])
-              }>
-              {Object.keys(listPlatforms.platforms)[index]}
+              key={platform}
+              onClick={() => handlePlatformChange(platform)}>
+              {platform}
               <Dropdown.Divider />
             </Dropdown.Item>
           ))}
@@ -47,6 +44,8 @@ function LinkContent({ remove, selectedPlatform, setSelectedPlatform }) {
           color="white"
           id="url"
           type="url"
+          value={item.url}
+          onChange={handleUrlChange}
           placeholder="e.g. https://www.github.com/safepre"
           required
         />

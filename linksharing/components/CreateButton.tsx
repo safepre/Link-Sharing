@@ -3,20 +3,19 @@
 import { Button } from 'flowbite-react'
 import { customThemeButton } from '../utils/helperTheme'
 import LinkContent from './LinkContent'
-import { Key, useState } from 'react'
 
-function CreateButton() {
-  const [Links, setLinks] = useState([]) // [
-
-  function eventHandler() {}
-
-  function isRemove() {}
-
+function CreateButton({
+  removeItem,
+  addLinkItem,
+  LinkItem,
+  updateLinkItem,
+  platforms,
+}) {
   return (
     <>
       <div className="flex justify-center rounded-md hover:bg-purple-100">
         <Button
-          onClick={eventHandler}
+          onClick={addLinkItem}
           theme={customThemeButton}
           size="xl"
           fullSized
@@ -24,8 +23,14 @@ function CreateButton() {
           + Add New Link
         </Button>
       </div>
-      {Links.map((link: { id: Key }) => (
-        <LinkContent key={link.id} remove={isRemove} />
+      {LinkItem.map(item => (
+        <LinkContent
+          key={item.id}
+          item={item}
+          remove={() => removeItem(item.id)}
+          updateItem={updateLinkItem}
+          platforms={platforms}
+        />
       ))}
     </>
   )
