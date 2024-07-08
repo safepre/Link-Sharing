@@ -1,17 +1,16 @@
 'use client'
 import { NavbarComponent } from '@/components/NavBar'
 import { platforms } from '@/utils/platforms'
-import CreateButton from '../../components/CreateButton'
+import LinkSection from '../../components/LinkSection'
 import Display from '../../components/Display'
 import { useState } from 'react'
-import { customThemeInput } from '../../utils/helperTheme'
-import { Button } from 'flowbite-react'
-import InputForms from '../../components/InputForms'
+import ProfileSection from '../../components/ProfileSection'
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import Section from '../../components/Section'
 
 const HomeLayout = ({ children }) => {
-  const [selectedButton, setSelectedButton] = useState('profile')
+  const [selectedButton, setSelectedButton] = useState('links')
   const [user, setUser] = useState({ firstName: '', lastName: '', email: '' })
   const [LinkItems, setLinkItems] = useState([])
 
@@ -28,7 +27,6 @@ const HomeLayout = ({ children }) => {
   const removeLinkItem = id => {
     setLinkItems(prevItems => prevItems.filter(item => item.id !== id))
   }
-
   return (
     <>
       <div className="bg-zinc-50">
@@ -42,72 +40,29 @@ const HomeLayout = ({ children }) => {
           <div className="flex justify-center items-center bg-white w-[1000px] h-[725px] rounded-md">
             <Display user={user} LinkItems={LinkItems} platforms={platforms} />{' '}
           </div>
-          {selectedButton === 'profile' ? (
-            <div className="overflow-auto relative bg-white w-full h-[725px] rounded-t-md">
-              <div className="m-10">
-                <span className="font-semibold text-3xl">
-                  Customize your links
-                </span>
-                <div className="mt-1 mb-6">
-                  <span className="text-sm text-slate-500">
-                    Add/edit/remove links below and then share all your profiles
-                    with the world!
-                  </span>
-                </div>
-                <CreateButton
-                  LinkItem={LinkItems}
-                  addLinkItem={addLinkItem}
-                  removeItem={removeLinkItem}
-                  updateLinkItem={updateLinkItem}
-                  platforms={platforms}
-                />
-              </div>
-              <div className="border-t absolute inset-x-0 bottom-0 h-16 ">
-                <div className="flex justify-end items-center h-full mr-7 ">
-                  <Button theme={customThemeInput} color="purple">
-                    Save
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="relative bg-white w-full h-[725px]">
-              <div className="m-10 ">
-                <span className="font-semibold text-3xl">Profile Details</span>
-                <div className="mt-1 mb-2">
-                  <span className="text-sm text-slate-500">
-                    Add your details to create a personal touch to your profile.
-                  </span>
-                  <div className="flex flex-col mt-7 justify-center items-center">
-                    <div className="flex flex-col gap-4">
-                      <div className="bg-zinc-100 rounded-lg p-4">
-                        <div className="grid grid-cols-3 items-center">
-                          <span className="text-slate-500">
-                            Profile picture
-                          </span>
-                          <button className="bg-purple-200 w-[194px] h-[193px] rounded-lg flex justify-center items-center text-purple-700 font-medium">
-                            <span>+ Upload Image</span>
-                          </button>
-                          <span className="text-slate-500 text-sm">
-                            Image must be below 1024x1024px. Use PNG or JPG
-                            format.
-                          </span>
-                        </div>
-                      </div>
-                      <InputForms user={user} setUser={setUser} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="border-t absolute bg-white inset-x-0 bottom-0 h-16">
-                <div className="flex justify-end items-center h-full mr-7">
-                  <Button theme={customThemeInput} color="purple">
-                    Save
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
+          <Section
+            title={
+              selectedButton === 'links'
+                ? 'Customize your links'
+                : 'Profile Details'
+            }
+            description={
+              selectedButton === 'links'
+                ? 'Add/edit/remove links below and then share all your profiles with the world!'
+                : 'Add your details to create a personal touch to your profile.'
+            }>
+            {selectedButton === 'links' ? (
+              <LinkSection
+                LinkItem={LinkItems}
+                addLinkItem={addLinkItem}
+                removeItem={removeLinkItem}
+                updateLinkItem={updateLinkItem}
+                platforms={platforms}
+              />
+            ) : (
+              <ProfileSection user={user} setUser={setUser} />
+            )}
+          </Section>
         </div>
       </div>
       <div className="bg-zinc-50">{children}</div>
