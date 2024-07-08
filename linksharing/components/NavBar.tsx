@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import { Navbar, Button } from 'flowbite-react'
 import { customThemeButton, customThemeNavbar } from '../utils/helperTheme'
-import { useState } from 'react'
+import Logo from '@/images/devlinks.svg'
+import Image from 'next/image'
 export function NavbarComponent({ selectedButton, setSelectedButton }) {
   function eventProfileHandler() {
     setSelectedButton('profile')
@@ -18,24 +19,20 @@ export function NavbarComponent({ selectedButton, setSelectedButton }) {
   return (
     <Navbar theme={customThemeNavbar} fluid rounded>
       <Navbar.Brand as={Link} href="https://flowbite-react.com">
-        <img
-          src="../images/devlinks.svg"
-          className="mr-3 h-6 sm:h-9"
-          alt="Devlink Logo"
-        />
+        <Image src={Logo} className="mr-3 h-6 sm:h-9" alt="Devlink Logo" />
       </Navbar.Brand>
-      <Button
-        theme={customThemeButton}
-        onClick={eventProfileHandler}
-        color="white"
-        className={selectedButton === 'profile' ? activeClass : ''}>
-        <span>Links</span>
-      </Button>
       <Button
         theme={customThemeButton}
         onClick={eventHandler}
         color="white"
         className={selectedButton === 'links' ? activeClass : ''}>
+        <span>Links</span>
+      </Button>
+      <Button
+        theme={customThemeButton}
+        onClick={eventProfileHandler}
+        color="white"
+        className={selectedButton === 'profile' ? activeClass : ''}>
         <span> Profile Details</span>
       </Button>
       <Navbar.Collapse>
