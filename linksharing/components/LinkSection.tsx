@@ -3,6 +3,7 @@
 import { Button } from 'flowbite-react'
 import { customThemeButton } from '../utils/helperTheme'
 import LinkContent from './LinkContent'
+import SaveButton from './SaveButton'
 
 function LinkSection({
   removeItem,
@@ -32,6 +33,9 @@ function LinkSection({
           platforms={platforms}
         />
       ))}
+      <div className="border-t absolute inset-x-0 bottom-0 h-16 ">
+        <SaveButton color="purple" type="submit" label={'Save'} />
+      </div>
     </>
   )
 }

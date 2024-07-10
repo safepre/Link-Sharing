@@ -1,9 +1,10 @@
 'use client'
 
-import { Button, Label, TextInput } from 'flowbite-react'
+import { Label, TextInput } from 'flowbite-react'
 import { customThemeInput } from '../utils/helperTheme'
 import { signinUser } from '@/actions/auth'
 import { useFormState } from 'react-dom'
+import SaveButton from './SaveButton'
 const initState = { message: null }
 
 function LoginForm() {
@@ -41,9 +42,7 @@ function LoginForm() {
           required
         />
       </div>
-      <Button color="purple" type="submit">
-        Login
-      </Button>
+      <SaveButton color="purple" type="submit" label={'Login'} />
     </form>
   )
 }

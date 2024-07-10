@@ -11,6 +11,7 @@ function LinkContent({ item, remove, updateItem, platforms }) {
   const handleUrlChange = e => {
     updateItem(item.id, { url: e.target.value })
   }
+
   return (
     <>
       <div className="rounded-md bg-gray-100 p-5 mt-5">
@@ -44,7 +45,7 @@ function LinkContent({ item, remove, updateItem, platforms }) {
           color="white"
           id="url"
           type="url"
-          value={item.url}
+          value={item.url || ''}
           onChange={handleUrlChange}
           placeholder="e.g. https://www.github.com/safepre"
           required

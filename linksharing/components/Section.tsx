@@ -13,7 +13,6 @@ const Section = ({ children, title, description }) => {
           </div>
           {children}
         </div>
-        <SaveButton />
       </div>
     </>
   )

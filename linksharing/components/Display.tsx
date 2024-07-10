@@ -3,7 +3,6 @@
 import React from 'react'
 
 const Display = ({ LinkItems, user, platforms }) => {
-  console.log(LinkItems, user, platforms)
   return (
     <div className="flex flex-col items-center space-y-4 ">
       {/* Profile Picture Placeholder */}
@@ -26,7 +25,7 @@ const Display = ({ LinkItems, user, platforms }) => {
         <div
           key={item.id}
           className={`flex justify-center items-center w-[220px] h-[40px] font-medium text-sm text-white ${
-            platforms[item.platform]?.bgColor || 'bg-gray-500'
+            platforms[item.platform]?.bgColor || 'bg-gray-300'
           } rounded-md`}>
           {item.platform}
         </div>

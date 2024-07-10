@@ -8,6 +8,7 @@ import ProfileSection from '../../components/ProfileSection'
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import Section from '../../components/Section'
+import SaveButton from '../../components/SaveButton'
 
 const HomeLayout = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState('links')
@@ -52,15 +53,19 @@ const HomeLayout = ({ children }) => {
                 : 'Add your details to create a personal touch to your profile.'
             }>
             {selectedButton === 'links' ? (
-              <LinkSection
-                LinkItem={LinkItems}
-                addLinkItem={addLinkItem}
-                removeItem={removeLinkItem}
-                updateLinkItem={updateLinkItem}
-                platforms={platforms}
-              />
+              <>
+                <LinkSection
+                  LinkItem={LinkItems}
+                  addLinkItem={addLinkItem}
+                  removeItem={removeLinkItem}
+                  updateLinkItem={updateLinkItem}
+                  platforms={platforms}
+                />
+              </>
             ) : (
-              <ProfileSection user={user} setUser={setUser} />
+              <>
+                <ProfileSection user={user} setUser={setUser} />
+              </>
             )}
           </Section>
         </div>

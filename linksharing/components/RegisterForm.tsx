@@ -4,6 +4,7 @@ import { Button, Label, TextInput } from 'flowbite-react'
 import { useFormState } from 'react-dom'
 import { registerUser } from '../actions/auth'
 import { customThemeInput } from '@/utils/helperTheme'
+import SaveButton from './SaveButton'
 const initState = { message: null }
 
 function RegisterForm() {
@@ -72,9 +73,7 @@ function RegisterForm() {
           <p className="text-red-600">{formState.message}</p>
         )}
       </div>
-      <Button color="purple" type="submit">
-        Create new account
-      </Button>
+      <SaveButton color="purple" type="submit" label={'Create new account'} />
     </form>
   )
 }
