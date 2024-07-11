@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Label, TextInput } from 'flowbite-react'
+import { Label, TextInput } from 'flowbite-react'
 import { useFormState } from 'react-dom'
 import { registerUser } from '../actions/auth'
 import { customThemeInput } from '@/utils/helperTheme'
@@ -9,7 +9,6 @@ const initState = { message: null }
 
 function RegisterForm() {
   const [formState, action] = useFormState(registerUser, initState)
-  console.log('formState' + formState)
   return (
     <form action={action} className="flex max-w-md flex-col gap-4">
       <div>
@@ -59,7 +58,7 @@ function RegisterForm() {
           <Label htmlFor="password1" value="Confirm password" />
         </div>
         <TextInput
-          name="confirmpassword"
+          name="confirmPassword"
           type="password"
           color={
             formState?.message === 'String must contain at least 8 character(s)'
