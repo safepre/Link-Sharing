@@ -1,15 +1,15 @@
 'use server'
 
 import { z } from 'zod'
-import { delay } from '@/utils/delay'
 import { postProfile } from '@/utils/profile'
 import { getCurrentUser } from '@/utils/users'
+import { revalidateTag } from 'next/cache'
 
 const profileSchema = z.object({
   first_name: z.string().min(2),
   last_name: z.string().min(2),
   email: z.string().email(),
-  userId: z.string(), // Add this line
+  userId: z.string(),
 })
 
 export const createProfile = async (prevState: any, formData: FormData) => {
@@ -30,10 +30,9 @@ export const createProfile = async (prevState: any, formData: FormData) => {
     return { message: errorMessage }
   }
   try {
-    await delay(2000)
     await postProfile(result.data)
+    revalidateTag('profile')
   } catch (error) {
-    console.error(error) // Log the error
     return { message: 'Invalid credentials' }
   }
 }

@@ -15,7 +15,7 @@ export const registerUser = async (prevState: any, formData: FormData) => {
   const result = authSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
-    confirmPassword: formData.get('confirmpassword'),
+    confirmPassword: formData.get('confirmPassword'),
   })
 
   if (result.error) {
@@ -32,7 +32,6 @@ export const registerUser = async (prevState: any, formData: FormData) => {
   } catch (error) {
     return { message: 'Failed to sign you up' }
   }
-
   redirect('/home')
 }
 
@@ -45,7 +44,6 @@ export const signinUser = async (prevState: any, formData: FormData) => {
     const { token } = await signin(data)
     cookies().set(COOKIE_NAME, token)
   } catch (e) {
-    console.error(e)
     return { message: 'Failed to sign you in' }
   }
   redirect('/home')
