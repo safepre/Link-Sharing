@@ -29,7 +29,9 @@ export const postProfile = async ({
 
 export const getOneProfile = async (userId: string) => {
   await delay()
-  return db.query.profiles.findFirst({
-    where: eq(profiles.userId, userId),
-  })
+  return (
+    db.query.profiles.findFirst({
+      where: eq(profiles.userId, userId),
+    }) || ''
+  )
 }

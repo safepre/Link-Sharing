@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { postProfile } from '@/utils/profile'
+import { getOneProfile, postProfile } from '@/utils/profile'
 import { getCurrentUser } from '@/utils/users'
 import { revalidateTag } from 'next/cache'
 
@@ -35,4 +35,9 @@ export const createProfile = async (prevState: any, formData: FormData) => {
   } catch (error) {
     return { message: 'Invalid credentials' }
   }
+}
+
+export const getProfileId = async (userId: string) => {
+  const profile = await getOneProfile(userId)
+  return profile
 }

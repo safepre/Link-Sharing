@@ -2,17 +2,23 @@
 
 import { TextInput } from 'flowbite-react'
 import { customThemeInput } from '../utils/helperTheme'
+
 import SaveButton from './SaveButton'
 import { createProfile } from '@/actions/profile'
 import { useFormState } from 'react-dom'
+import { setUser } from '@/lib/features/userSlice'
+import { useAppDispatch, useAppSelector } from '../lib/hooks'
 
 const initState = { message: null }
 
-const ProfileSection = ({ user, setUser }) => {
+const ProfileSection = () => {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(state => state.user)
+
   const [formState, action] = useFormState(createProfile, initState)
 
   const handleInputChange = e => {
-    setUser({ ...user, [e.target.id]: e.target.value })
+    dispatch(setUser({ ...user, [e.target.id]: e.target.value }))
   }
 
   return (
