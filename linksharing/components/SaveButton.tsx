@@ -9,7 +9,7 @@ const SaveButton = ({ label, ...btnProps }) => {
 
   return (
     <>
-      <div className="flex justify-end items-center h-full mr-7 ">
+      <div className="justify-end items-center h-full mr-7 ">
         <Button
           {...btnProps}
           type="submit"

@@ -22,11 +22,11 @@ const ProfileSection = () => {
   }
 
   return (
-    <form className="mt-1 mb-2" action={action}>
-      <div className="flex flex-col mt-7 justify-center items-center">
-        <div className="flex flex-col gap-4">
-          <div className="bg-zinc-100 rounded-lg p-4">
-            <div className="grid grid-cols-3 items-center">
+    <form action={action}>
+      <div className="flex flex-col mt-7 h-[580px] ">
+        <div className="flex flex-col gap-4 w-full p-4">
+          <div className="bg-zinc-100 rounded-lg w-full">
+            <div className="grid grid-cols-3 items-center p-4">
               <span className="text-slate-500">Profile picture</span>
               <button className="bg-purple-200 w-[194px] h-[193px] rounded-lg flex justify-center items-center text-purple-700 font-medium">
                 <span>+ Upload Image</span>
@@ -36,7 +36,8 @@ const ProfileSection = () => {
               </span>
             </div>
           </div>
-          <div className="bg-zinc-100 rounded-lg w-[739px] bg-gray-300">
+
+          <div className="bg-zinc-100 rounded-lg w-full">
             <div className="flex flex-row justify-between mt-3.5">
               <span className="m-4 text-slate-500">First name*</span>
               <TextInput
@@ -78,9 +79,9 @@ const ProfileSection = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="border-t absolute inset-x-0 bottom-0 h-16 ">
-        <SaveButton color="purple" type="submit" label={'Save'} />
+        <div className="bg-white mt-auto rounded-md h-16 flex justify-end p-3">
+          <SaveButton color="purple" type="submit" label={'Save'} />
+        </div>
       </div>
     </form>
   )
