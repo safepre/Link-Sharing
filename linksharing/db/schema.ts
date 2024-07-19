@@ -22,20 +22,18 @@ export const users = sqliteTable('users', {
 export const profiles = sqliteTable('profiles', {
   id: id(),
   createdAt: createdAt(),
-  userId: integer('user_id')
-    .references(() => users.id)
-    .notNull(),
-  firstName: text('first_name').notNull(),
-  lastName: text('last_name').notNull(),
+  userId: text('user_id')
+    .unique()
+    .references(() => users.id),
   email: text('email').notNull(),
+  first_name: text('first_name').notNull(), // Add this line
+  last_name: text('last_name').notNull(), // Add this line
 })
 
 export const platforms = sqliteTable('platforms', {
   id: id(),
   createdAt: createdAt(),
-  profileId: integer('profile_id')
-    .references(() => profiles.id)
-    .notNull(),
+  profileId: text('profile_id').references(() => profiles.id),
   platformName: text('name').unique().notNull(),
   link: text('link').notNull(),
 })

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userSlice from './features/userSlice'
+import linkSlice from './features/linkSlice'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userSlice,
+      link: linkSlice,
     },
   })
 }

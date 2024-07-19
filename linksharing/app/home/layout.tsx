@@ -1,32 +1,15 @@
 'use client'
 import { NavbarComponent } from '@/components/NavBar'
-import { platforms } from '@/utils/platforms'
 import LinkSection from '@/components/LinkSection'
 import { useState } from 'react'
 import ProfileSection from '@/components/ProfileSection'
 import React from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import Section from '@/components/Section'
 import ProfileDisplay from '@/components/ProfileDisplay'
 import DropdownDisplay from '@/components/DropdownDisplay'
 
 const HomeLayout = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState('links')
-  const [LinkItems, setLinkItems] = useState([])
-
-  const addLinkItem = () => {
-    setLinkItems(prevItems => [...prevItems, { id: uuidv4(), platform: null }])
-  }
-  const updateLinkItem = (id, updatedData) => {
-    setLinkItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id ? { ...item, ...updatedData } : item
-      )
-    )
-  }
-  const removeLinkItem = id => {
-    setLinkItems(prevItems => prevItems.filter(item => item.id !== id))
-  }
 
   return (
     <>
@@ -42,7 +25,7 @@ const HomeLayout = ({ children }) => {
             <div className="flex flex-col items-center space-y-4 ">
               <ProfileDisplay />
               {children}
-              <DropdownDisplay LinkItems={LinkItems} platforms={platforms} />
+              <DropdownDisplay />
             </div>
           </div>
           <Section
@@ -58,13 +41,7 @@ const HomeLayout = ({ children }) => {
             }>
             {selectedButton === 'links' ? (
               <>
-                <LinkSection
-                  LinkItem={LinkItems}
-                  addLinkItem={addLinkItem}
-                  removeItem={removeLinkItem}
-                  updateLinkItem={updateLinkItem}
-                  platforms={platforms}
-                />
+                <LinkSection />
               </>
             ) : (
               <>
