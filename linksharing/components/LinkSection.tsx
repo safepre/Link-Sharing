@@ -1,18 +1,27 @@
 'use client'
 
 import { Button } from 'flowbite-react'
-import { customThemeButton } from '../utils/helperTheme'
+import { customThemeButton, customThemeInput } from '../utils/helperTheme'
 import LinkContent from './LinkContent'
-import SaveButton from './SaveButton'
 import { useAppDispatch, useAppSelector } from '../lib/hooks'
 import { addLinkItem } from '../lib/features/linkSlice'
+import { useTransition } from 'react'
+import { saveLinkItems } from '../actions/link'
 
 function LinkSection() {
+  const [isPending, startTransition] = useTransition()
   const dispatch = useAppDispatch()
   const linkItem = useAppSelector(state => state.link)
   const add = () => {
     dispatch(addLinkItem())
   }
+
+  const save = () => {
+    startTransition(() => {
+      saveLinkItems(linkItem.linkItems)
+    })
+  }
+
   return (
     <div className="flex flex-col h-[580px] max-h-[580px]">
       <div className="flex justify-center rounded-md hover:bg-purple-100 px-7  mb-5">
@@ -31,7 +40,16 @@ function LinkSection() {
         ))}
       </div>
       <div className="bg-white mt-auto rounded-md h-16 flex justify-end p-3">
-        <SaveButton color="purple" type="submit" label={'Save'} />
+        <div className="justify-end items-center h-full mr-7 ">
+          <Button
+            onClick={save}
+            type="submit"
+            isProcessing={isPending}
+            theme={customThemeInput}
+            color="purple">
+            Save
+          </Button>
+        </div>
       </div>
     </div>
   )

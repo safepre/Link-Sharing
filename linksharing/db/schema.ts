@@ -26,15 +26,15 @@ export const profiles = sqliteTable('profiles', {
     .unique()
     .references(() => users.id),
   email: text('email').notNull(),
-  first_name: text('first_name').notNull(), // Add this line
-  last_name: text('last_name').notNull(), // Add this line
+  first_name: text('first_name').notNull(),
+  last_name: text('last_name').notNull(),
 })
 
 export const platforms = sqliteTable('platforms', {
-  id: id(),
+  id: text('id').primaryKey(),
   createdAt: createdAt(),
   profileId: text('profile_id').references(() => profiles.id),
-  platformName: text('name').unique().notNull(),
+  platformName: text('name').notNull(),
   link: text('link').notNull(),
 })
 
