@@ -36,8 +36,8 @@ export function NavbarComponent({ selectedButton, setSelectedButton }) {
         <span> Profile Details</span>
       </Button>
       <Navbar.Collapse>
-        <Navbar.Link as={Link} href="#">
-          About
+        <Navbar.Link as={Link} href="/preview">
+          Preview
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
