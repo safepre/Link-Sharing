@@ -12,3 +12,12 @@ export const getPlatforms = async (profileId: string) => {
     }) || ''
   )
 }
+
+export const deletePlatform = async (id: string) => {
+  await delay()
+  const remove = await db
+    .delete(platforms)
+    .where(eq(platforms.id, id))
+    .returning()
+  return remove
+}

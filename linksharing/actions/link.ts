@@ -5,7 +5,7 @@ import { delay } from '@/utils/delay'
 import { getCurrentUser } from '@/utils/users'
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
-import { getPlatforms } from '@/utils/link'
+import { deletePlatform, getPlatforms } from '@/utils/link'
 
 export const saveLinkItems = async (
   items: Array<{ platform: string; url: string }>
@@ -23,14 +23,11 @@ export const saveLinkItems = async (
       url: z.string().url(),
       id: z.string(),
     })
-    console.log('linkitemschema', linkItemSchema)
     const validatedItems = items.map(item => linkItemSchema.parse(item))
-    console.log('validatedItems', validatedItems)
     const existingItems = await db
       .select()
       .from(platforms)
       .where(eq(platforms.profileId, user.profile?.id ?? ''))
-    console.log('existingItems', existingItems)
     const itemsToInsert = []
     const itemsToUpdate = []
 
@@ -68,8 +65,6 @@ export const saveLinkItems = async (
     }
     return { message: 'Links saved successfully' }
   } catch (e) {
-    console.error(e)
-    console.log(e)
     return { message: 'Failed to save links' }
   }
 }
@@ -77,4 +72,9 @@ export const saveLinkItems = async (
 export const getPlatformId = async (profileId: string) => {
   const profile = await getPlatforms(profileId)
   return profile
+}
+
+export const deletePlatformId = async (id: string) => {
+  const removePlatform = await deletePlatform(id)
+  return removePlatform
 }

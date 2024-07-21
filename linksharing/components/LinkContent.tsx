@@ -1,12 +1,14 @@
 'use client'
-
 import { Dropdown, Label, TextInput } from 'flowbite-react'
 import { customThemeDropdown, customThemeInput } from '../utils/helperTheme'
 import { platforms } from '../utils/platforms'
 import { useAppDispatch, useAppSelector } from '../lib/hooks'
 import { removeLinkItem, updateLinkItem } from '../lib/features/linkSlice'
+import { useTransition } from 'react'
+import { deletePlatformId } from '@/actions/link'
 
 function LinkContent({ id }) {
+  const [isPending, startTransition] = useTransition()
   const dispatch = useAppDispatch()
   const linkItem = useAppSelector(state =>
     state.link.linkItems.find(item => item.id === id)
@@ -22,6 +24,10 @@ function LinkContent({ id }) {
 
   const remove = () => {
     dispatch(removeLinkItem(id))
+
+    startTransition(() => {
+      deletePlatformId(id)
+    })
   }
 
   return (
