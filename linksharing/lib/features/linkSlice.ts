@@ -19,6 +19,9 @@ export const linkSlice = createSlice({
   name: 'link',
   initialState,
   reducers: {
+    setLinkItems: (state, action: PayloadAction<LinkItem[]>) => {
+      state.linkItems = action.payload
+    },
     addLinkItem: state => {
       state.linkItems.push({ id: uuidv4(), url: '', platform: '' })
     },
@@ -40,6 +43,7 @@ export const linkSlice = createSlice({
   },
 })
 
-export const { addLinkItem, updateLinkItem, removeLinkItem } = linkSlice.actions
+export const { addLinkItem, updateLinkItem, removeLinkItem, setLinkItems } =
+  linkSlice.actions
 
 export default linkSlice.reducer
