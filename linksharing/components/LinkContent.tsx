@@ -4,11 +4,7 @@ import { Dropdown, Label, TextInput } from 'flowbite-react'
 import { customThemeDropdown, customThemeInput } from '../utils/helperTheme'
 import { platforms } from '../utils/platforms'
 import { useAppDispatch, useAppSelector } from '../lib/hooks'
-import {
-  removeLinkItem,
-  updateLinkItem,
-  setSelectedLinkId,
-} from '../lib/features/linkSlice'
+import { removeLinkItem, updateLinkItem } from '../lib/features/linkSlice'
 
 function LinkContent({ id }) {
   const dispatch = useAppDispatch()
@@ -41,7 +37,7 @@ function LinkContent({ id }) {
       </div>
       <Dropdown
         theme={customThemeDropdown}
-        label={linkItem.platform || 'Select a platform'}
+        label={linkItem?.platform || 'Select a platform'}
         inline>
         {Object.keys(platforms).map(platform => (
           <Dropdown.Item
@@ -60,7 +56,7 @@ function LinkContent({ id }) {
         color="white"
         id="url"
         type="url"
-        value={linkItem.url}
+        value={linkItem?.url}
         onChange={handleUrlChange}
         placeholder="e.g. https://www.github.com/safepre"
         required

@@ -6,7 +6,6 @@ import ProfileSection from '@/components/ProfileSection'
 import React from 'react'
 import Section from '@/components/Section'
 import ProfileDisplay from '@/components/ProfileDisplay'
-import DropdownDisplay from '@/components/DropdownDisplay'
 
 const HomeLayout = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState('links')
@@ -25,7 +24,6 @@ const HomeLayout = ({ children }) => {
             <div className="flex flex-col items-center space-y-4 ">
               <ProfileDisplay />
               {children}
-              <DropdownDisplay />
             </div>
           </div>
           <Section

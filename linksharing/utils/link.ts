@@ -1,0 +1,14 @@
+import 'server-only'
+import { db } from '@/db/db'
+import { delay } from '@/utils/delay'
+import { eq } from 'drizzle-orm'
+import { platforms } from '@/db/schema'
+
+export const getPlatforms = async (profileId: string) => {
+  await delay()
+  return (
+    db.query.platforms.findMany({
+      where: eq(platforms.profileId, profileId),
+    }) || ''
+  )
+}

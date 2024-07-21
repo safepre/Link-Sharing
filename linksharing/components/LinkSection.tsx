@@ -24,7 +24,7 @@ function LinkSection() {
 
   return (
     <div className="flex flex-col h-[580px] max-h-[580px]">
-      <div className="flex justify-center rounded-md hover:bg-purple-100 px-7  mb-5">
+      <div className="flex justify-center rounded-md hover:bg-purple-100 px-7 mb-5">
         <Button
           onClick={add}
           theme={customThemeButton}
@@ -34,7 +34,7 @@ function LinkSection() {
           + Add New Link
         </Button>
       </div>
-      <div className="relative px-7 overflow-y-auto max-h-[70%]">
+      <div className="relative px-7 overflow-y-auto max-h-[75%]">
         {linkItem.linkItems.map(item => (
           <LinkContent key={item.id} id={item.id} />
         ))}
