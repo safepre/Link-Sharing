@@ -1,10 +1,23 @@
 'use client'
 
-import { useAppSelector } from '../lib/hooks'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
+import { setUser } from '@/lib/features/userSlice'
 
 const UserDisplay = ({ id }) => {
+  const dispatch = useAppDispatch()
   const user = useAppSelector(state => state.user)
-
+  useEffect(() => {
+    if (id) {
+      dispatch(
+        setUser({
+          firstName: id.first_name,
+          lastName: id.last_name,
+          email: id.email,
+        })
+      )
+    }
+  }, [dispatch, id])
   return (
     <>
       {/* Name */}
